@@ -685,4 +685,41 @@ public class Context {
     public Drawable getDrawableResource(int id) {
         return applicationContext().getResources().getDrawable(id);
     }
+
+    // Person
+    private PersonRegistrationHandler personRegistrationHandler() {
+        if(personRegistrationHandler == null) {
+            personRegistrationHandler = new PersonRegistrationHandler(personService());
+        }
+        return personRegistrationHandler;
+    }
+
+    public PersonService personService() {
+        if(personService == null) {
+            personService = new PersonService(allPersons(),allTimelineEvents());
+        }
+        return personService;
+    }
+
+    public AllPersons allPersons() {
+        initRepository();
+        if(allPersons == null) {
+            allPersons = new AllPersons(personRepository(), alertRepository(), timelineEventRepository());
+        }
+        return allPersons;
+    }
+
+    private PersonRepository personRepository() {
+        if(personRepository == null) {
+            personRepository = new PersonRepository();
+        }
+        return personRepository;
+    }
+
+    public Cache<PersonClients> personClientsCache() {
+        if(personClientsCache == null) {
+            personClientsCache = new Cache<PersonClients>();
+        }
+        return personClientsCache;
+    }
 }
