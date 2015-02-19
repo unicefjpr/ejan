@@ -2,6 +2,15 @@ package org.ei.drishti;
 
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+
+import org.ei.drishti.commonregistry.AllCommonsRepository;
+import org.ei.drishti.commonregistry.commonRepository;
+import org.ei.drishti.person.AllPersons;
+import org.ei.drishti.person.PersonClients;
+import org.ei.drishti.person.PersonRegistrationHandler;
+import org.ei.drishti.person.PersonRepository;
+import org.ei.drishti.person.PersonService;
+import org.ei.drishti.person.followupHandler;
 import org.ei.drishti.repository.*;
 import org.ei.drishti.service.*;
 import org.ei.drishti.service.formSubmissionHandler.*;
@@ -12,6 +21,9 @@ import org.ei.drishti.view.contract.*;
 import org.ei.drishti.view.contract.pnc.PNCClients;
 import org.ei.drishti.view.controller.ANMController;
 import org.ei.drishti.view.controller.ANMLocationController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
@@ -375,6 +387,23 @@ public class Context {
             repository = new Repository(this.applicationContext, session(), settingsRepository(), alertRepository(),
                     eligibleCoupleRepository(), childRepository(), timelineEventRepository(), motherRepository(), reportRepository(),
                     formDataRepository(), serviceProvidedRepository());
+            ArrayList<DrishtiRepository> drishtireposotorylist = new ArrayList<DrishtiRepository>();
+            drishtireposotorylist.add(settingsRepository());
+            drishtireposotorylist.add(alertRepository());
+            drishtireposotorylist.add(eligibleCoupleRepository());
+            drishtireposotorylist.add(childRepository());
+            drishtireposotorylist.add(timelineEventRepository());
+            drishtireposotorylist.add(motherRepository());
+            drishtireposotorylist.add(reportRepository());
+            drishtireposotorylist.add(formDataRepository());
+            drishtireposotorylist.add(serviceProvidedRepository());
+            drishtireposotorylist.add(personRepository());
+            drishtireposotorylist.add(commonrepository("user"));
+            DrishtiRepository [] drishtireposotoryarray =  drishtireposotorylist.toArray(new DrishtiRepository[drishtireposotorylist.size()]);
+            repository = new Repository(this.applicationContext, session(),drishtireposotoryarray );
+//            repository = new Repository(this.applicationContext, session(), settingsRepository(), alertRepository(),
+//                    eligibleCoupleRepository(), childRepository(), timelineEventRepository(), motherRepository(), reportRepository(),
+//                    formDataRepository(), serviceProvidedRepository(),personRepository(),commonrepository("user"));
         }
         return repository;
     }
@@ -722,4 +751,17 @@ public class Context {
         }
         return personClientsCache;
     }
+    ///////////////////////////////// common methods ///////////////////////////////
+    public AllCommonsRepository allCommonsRepositoryobjects(String tablename){
+        initRepository();
+        return new AllCommonsRepository(commonrepository(tablename),alertRepository(),timelineEventRepository());
+    }
+    public commonRepository commonrepository(String tablename){
+        return new commonRepository(tablename);
+    }
+
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////
 }
