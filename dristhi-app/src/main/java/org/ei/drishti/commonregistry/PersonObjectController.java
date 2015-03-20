@@ -2,10 +2,8 @@ package org.ei.drishti.commonregistry;
 
 import com.google.gson.Gson;
 
-import org.ei.drishti.person.AllPersons;
-import org.ei.drishti.person.Person;
-import org.ei.drishti.person.PersonClient;
-import org.ei.drishti.person.PersonClients;
+
+
 import org.ei.drishti.repository.AllBeneficiaries;
 import org.ei.drishti.util.Cache;
 import org.ei.drishti.util.CacheableData;

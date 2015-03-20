@@ -1,7 +1,6 @@
 package org.ei.drishti.commonregistry;
 
-import org.ei.drishti.person.Person;
-import org.ei.drishti.person.PersonRepository;
+
 import org.ei.drishti.repository.AlertRepository;
 import org.ei.drishti.repository.TimelineEventRepository;
 

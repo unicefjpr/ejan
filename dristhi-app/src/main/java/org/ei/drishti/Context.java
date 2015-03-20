@@ -13,12 +13,6 @@ import org.ei.drishti.commonregistry.PersonObject;
 import org.ei.drishti.commonregistry.PersonObjectClients;
 import org.ei.drishti.commonregistry.RepositoryInformationHolder;
 import org.ei.drishti.commonregistry.commonRepository;
-import org.ei.drishti.person.AllPersons;
-import org.ei.drishti.person.PersonClients;
-import org.ei.drishti.person.PersonRegistrationHandler;
-import org.ei.drishti.person.PersonRepository;
-import org.ei.drishti.person.PersonService;
-import org.ei.drishti.person.followupHandler;
 import org.ei.drishti.repository.*;
 import org.ei.drishti.service.*;
 import org.ei.drishti.service.formSubmissionHandler.*;
@@ -65,7 +59,6 @@ public class Context {
     private AllTimelineEvents allTimelineEvents;
     private AllReports allReports;
     private AllServicesProvided allServicesProvided;
-    private AllPersons allPersons;
     private AllCommonsRepository allCommonPersonObjectsRepository;
 
     private DrishtiService drishtiService;
@@ -93,7 +86,6 @@ public class Context {
     private Cache<PNCClients> pncClientsCache;
     private Cache<Villages> villagesCache;
     private Cache<Typeface> typefaceCache;
-    private Cache<PersonClients> personClientsCache;
     private Cache<PersonObjectClients> personObjectClientsCache;
 
     private HTTPAgent httpAgent;
@@ -737,42 +729,7 @@ public class Context {
         return applicationContext().getResources().getDrawable(id);
     }
 
-    // Person
-    private PersonRegistrationHandler personRegistrationHandler() {
-        if(personRegistrationHandler == null) {
-            personRegistrationHandler = new PersonRegistrationHandler(personService());
-        }
-        return personRegistrationHandler;
-    }
 
-    public PersonService personService() {
-        if(personService == null) {
-            personService = new PersonService(allPersons(),allTimelineEvents());
-        }
-        return personService;
-    }
-
-    public AllPersons allPersons() {
-        initRepository();
-        if(allPersons == null) {
-            allPersons = new AllPersons(personRepository(), alertRepository(), timelineEventRepository());
-        }
-        return allPersons;
-    }
-
-    private PersonRepository personRepository() {
-        if(personRepository == null) {
-            personRepository = new PersonRepository();
-        }
-        return personRepository;
-    }
-
-    public Cache<PersonClients> personClientsCache() {
-        if(personClientsCache == null) {
-            personClientsCache = new Cache<PersonClients>();
-        }
-        return personClientsCache;
-    }
     ///////////////////////////////// common methods ///////////////////////////////
     public  Cache <PersonObjectClients> personObjectClientsCache(){
         this.personObjectClientsCache = null;

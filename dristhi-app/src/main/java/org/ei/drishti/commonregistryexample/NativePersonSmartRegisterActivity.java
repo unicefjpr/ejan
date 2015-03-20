@@ -146,10 +146,10 @@ public class NativePersonSmartRegisterActivity extends SecuredNativeSmartRegiste
                 case R.id.profile_info_layout:
                     showProfileView((ECClient) view.getTag());
                     break;
-                case R.id.follow_up:
-                    Log.v("follow up check","a lot is done");
-                    showFragmentDialog(new EditDialogOptionModel(), view.getTag());
-                    break;
+//                case R.id.follow_up:
+//                    Log.v("follow up check","a lot is done");
+//                    showFragmentDialog(new EditDialogOptionModel(), view.getTag());
+//                    break;
             }
         }
 
