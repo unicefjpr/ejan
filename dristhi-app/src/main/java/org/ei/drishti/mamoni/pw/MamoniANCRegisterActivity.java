@@ -5,9 +5,7 @@ import android.view.View;
 
 import org.ei.drishti.R;
 import org.ei.drishti.adapter.SmartRegisterPaginatedAdapter;
-import org.ei.drishti.commonregistry.PersonObjectController;
-import org.ei.drishti.mamoni.elco.MamoniEligibleCoupleClientsProvider;
-import org.ei.drishti.mamoni.elco.MamoniModeOption;
+import org.ei.drishti.commonregistry.CommonPersonObjectController;
 import org.ei.drishti.provider.SmartRegisterClientsProvider;
 import org.ei.drishti.view.activity.SecuredNativeSmartRegisterActivity;
 import org.ei.drishti.view.contract.ECClient;
@@ -35,7 +33,7 @@ import static com.google.common.collect.Iterables.toArray;
 public class MamoniANCRegisterActivity extends SecuredNativeSmartRegisterActivity {
 
     private SmartRegisterClientsProvider clientProvider = null;
-    private PersonObjectController controller;
+    private CommonPersonObjectController controller;
     private VillageController villageController;
     private DialogOptionMapper dialogOptionMapper;
 
@@ -122,7 +120,7 @@ public class MamoniANCRegisterActivity extends SecuredNativeSmartRegisterActivit
 
     @Override
     protected void onInitialization() {
-        controller = new PersonObjectController(context.allCommonsRepositoryobjects("mamoni_pregnant_woman"),
+        controller = new CommonPersonObjectController(context.allCommonsRepositoryobjects("mamoni_pregnant_woman"),
                 context.allBeneficiaries(), context.listCache(),
                 context.personObjectClientsCache(),"PW_Name","mamoni_pregnant_woman");
         villageController = new VillageController(context.allEligibleCouples(),

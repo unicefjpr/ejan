@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.ei.drishti.R;
-import org.ei.drishti.commonregistry.PersonObjectClient;
-import org.ei.drishti.commonregistry.PersonObjectController;
+import org.ei.drishti.commonregistry.CommonPersonObjectClient;
+import org.ei.drishti.commonregistry.CommonPersonObjectController;
 import org.ei.drishti.provider.SmartRegisterClientsProvider;
 import org.ei.drishti.view.contract.SmartRegisterClient;
 import org.ei.drishti.view.contract.SmartRegisterClients;
@@ -33,11 +33,11 @@ public class MamoniANCClientsProvider implements SmartRegisterClientsProvider {
     private final int txtColorBlack;
     private final AbsListView.LayoutParams clientViewLayoutParams;
 
-    protected PersonObjectController controller;
+    protected CommonPersonObjectController controller;
 
     public MamoniANCClientsProvider(Context context,
                                     View.OnClickListener onClickListener,
-                                    PersonObjectController controller) {
+                                    CommonPersonObjectController controller) {
         this.onClickListener = onClickListener;
         this.controller = controller;
         this.context = context;
@@ -67,7 +67,7 @@ public class MamoniANCClientsProvider implements SmartRegisterClientsProvider {
         edit.setOnClickListener(onClickListener);
         edit.setTag(smartRegisterClient);
 
-        PersonObjectClient pc = (PersonObjectClient) smartRegisterClient;
+        CommonPersonObjectClient pc = (CommonPersonObjectClient) smartRegisterClient;
 
         hhid.setText(pc.getDetails().get("PW_HHID")!=null?pc.getDetails().get("PW_HHID"):"");
         name.setText(pc.getName()!=null?pc.getName():"");

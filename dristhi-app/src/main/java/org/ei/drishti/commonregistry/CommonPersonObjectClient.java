@@ -7,12 +7,12 @@ import java.util.Map;
 /**
  * Created by user on 2/12/15.
  */
-public class PersonObjectClient implements SmartRegisterClient{
+public class CommonPersonObjectClient implements SmartRegisterClient{
     private String caseId;
     private Map<String, String> details;
     public String name = "";
 
-    public PersonObjectClient(String caseId, Map<String, String> details,String name) {
+    public CommonPersonObjectClient(String caseId, Map<String, String> details, String name) {
         this.caseId = caseId;
         this.details = details;
         if(name != null) {

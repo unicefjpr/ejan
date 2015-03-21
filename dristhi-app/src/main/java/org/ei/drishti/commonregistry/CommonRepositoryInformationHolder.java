@@ -3,7 +3,7 @@ package org.ei.drishti.commonregistry;
 /**
  * Created by raihan on 3/16/15.
  */
-public class RepositoryInformationHolder {
+public class CommonRepositoryInformationHolder {
     String bindtypename;
     String [] columnNames;
 
@@ -11,7 +11,7 @@ public class RepositoryInformationHolder {
         return bindtypename;
     }
 
-    public RepositoryInformationHolder(String bindtypename, String[] columnNames) {
+    public CommonRepositoryInformationHolder(String bindtypename, String[] columnNames) {
         this.bindtypename = bindtypename;
         this.columnNames = columnNames;
     }

@@ -8,11 +8,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -21,7 +19,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(RobolectricTestRunner.class)
 public class AllCommonsRepositoryTest {
     @Mock
-    private commonRepository personRepository;
+    private CommonRepository personRepository;
     @Mock
     private  TimelineEventRepository timelineEventRepository;
     @Mock
@@ -36,7 +34,7 @@ public class AllCommonsRepositoryTest {
 
     @Test
     public void ShouldReturnAllPersonObjectOfaCertainTypeFromRepository() {
-        List <PersonObject> expectedpersonobjects = Arrays.asList(new PersonObject("case1","relationid1",new HashMap<String, String>(),""));
+        List <CommonPersonObject> expectedpersonobjects = Arrays.asList(new CommonPersonObject("case1","relationid1",new HashMap<String, String>(),""));
         when(personRepository.allcommon()).thenReturn(expectedpersonobjects);
         assertEquals(expectedpersonobjects,personRepository.allcommon());
     }
@@ -52,7 +50,7 @@ public class AllCommonsRepositoryTest {
 
 
 
-//    public List<PersonObject> findByCaseIDs(List<String> caseIds) {
+//    public List<CommonPersonObject> findByCaseIDs(List<String> caseIds) {
 //        return personRepository.findByCaseIDs(caseIds.toArray(new String[caseIds.size()]));
 //    }
 //

@@ -5,7 +5,7 @@ import android.view.View;
 
 import org.ei.drishti.R;
 import org.ei.drishti.adapter.SmartRegisterPaginatedAdapter;
-import org.ei.drishti.commonregistry.PersonObjectController;
+import org.ei.drishti.commonregistry.CommonPersonObjectController;
 import org.ei.drishti.domain.form.FieldOverrides;
 import org.ei.drishti.provider.SmartRegisterClientsProvider;
 import org.ei.drishti.view.activity.SecuredNativeSmartRegisterActivity;
@@ -34,7 +34,7 @@ import static com.google.common.collect.Iterables.toArray;
 public class MamoniELigibleCoupleSmartRegisterActivity extends SecuredNativeSmartRegisterActivity {
 
     private SmartRegisterClientsProvider clientProvider = null;
-    private PersonObjectController controller;
+    private CommonPersonObjectController controller;
     private VillageController villageController;
     private DialogOptionMapper dialogOptionMapper;
 
@@ -121,7 +121,7 @@ public class MamoniELigibleCoupleSmartRegisterActivity extends SecuredNativeSmar
 
     @Override
     protected void onInitialization() {
-        controller = new PersonObjectController(context.allCommonsRepositoryobjects("mamoni_eligible_couple"),
+        controller = new CommonPersonObjectController(context.allCommonsRepositoryobjects("mamoni_eligible_couple"),
                 context.allBeneficiaries(), context.listCache(),
                 context.personObjectClientsCache(),"EC_WomanName","mamoni_eligible_couple");
         villageController = new VillageController(context.allEligibleCouples(),

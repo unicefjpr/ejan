@@ -1,11 +1,10 @@
 package org.ei.drishti.commonregistryexample;
 
-import android.util.Log;
 import android.view.View;
 
 import org.ei.drishti.R;
 import org.ei.drishti.adapter.SmartRegisterPaginatedAdapter;
-import org.ei.drishti.commonregistry.PersonObjectController;
+import org.ei.drishti.commonregistry.CommonPersonObjectController;
 import org.ei.drishti.provider.SmartRegisterClientsProvider;
 import org.ei.drishti.view.activity.SecuredNativeSmartRegisterActivity;
 import org.ei.drishti.view.contract.ECClient;
@@ -33,7 +32,7 @@ import static com.google.common.collect.Iterables.toArray;
 public class NativePersonSmartRegisterActivity extends SecuredNativeSmartRegisterActivity {
 
     private SmartRegisterClientsProvider clientProvider = null;
-    private PersonObjectController controller;
+    private CommonPersonObjectController controller;
     private VillageController villageController;
     private DialogOptionMapper dialogOptionMapper;
 
@@ -118,7 +117,7 @@ public class NativePersonSmartRegisterActivity extends SecuredNativeSmartRegiste
 
     @Override
     protected void onInitialization() {
-        controller = new PersonObjectController(context.allCommonsRepositoryobjects("person"),
+        controller = new CommonPersonObjectController(context.allCommonsRepositoryobjects("person"),
                 context.allBeneficiaries(), context.listCache(),
                 context.personObjectClientsCache(),"name","person");
         villageController = new VillageController(context.allEligibleCouples(),

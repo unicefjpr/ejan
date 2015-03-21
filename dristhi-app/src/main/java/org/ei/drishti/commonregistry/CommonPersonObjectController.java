@@ -14,20 +14,20 @@ import java.util.List;
 
 import static java.util.Collections.sort;
 
-public class PersonObjectController {
+public class CommonPersonObjectController {
 
     private  final String person_CLIENTS_LIST;
 
     private final AllCommonsRepository allpersonobjects;
     private final AllBeneficiaries allBeneficiaries;
     private final Cache<String> cache;
-    private final Cache<PersonObjectClients> personObjectClientsCache;
+    private final Cache<CommonPersonObjectClients> personObjectClientsCache;
     public final String nameString;
 
 
-    public PersonObjectController(AllCommonsRepository allpersons,
-                                  AllBeneficiaries allBeneficiaries, Cache<String> cache,
-                                  Cache<PersonObjectClients> personClientsCache,String nameString,String bindtype) {
+    public CommonPersonObjectController(AllCommonsRepository allpersons,
+                                        AllBeneficiaries allBeneficiaries, Cache<String> cache,
+                                        Cache<CommonPersonObjectClients> personClientsCache, String nameString, String bindtype) {
         this.allpersonobjects = allpersons;
         this.allBeneficiaries = allBeneficiaries;
         this.cache = cache;
@@ -40,11 +40,11 @@ public class PersonObjectController {
         return cache.get(person_CLIENTS_LIST, new CacheableData<String>() {
             @Override
             public String fetch() {
-                List<PersonObject> p = allpersonobjects.all();
-                PersonObjectClients pClients = new PersonObjectClients();
+                List<CommonPersonObject> p = allpersonobjects.all();
+                CommonPersonObjectClients pClients = new CommonPersonObjectClients();
 
-                for (PersonObject personinlist : p) {
-                      PersonObjectClient pClient = new PersonObjectClient(personinlist.getCaseId(),personinlist.getDetails(),personinlist.getDetails().get(nameString));
+                for (CommonPersonObject personinlist : p) {
+                      CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(),personinlist.getDetails(),personinlist.getDetails().get(nameString));
 //                    pClient.entityID = personinlist.getCaseId();
                     pClients.add(pClient);
                 }
@@ -55,17 +55,17 @@ public class PersonObjectController {
     }
 
     //#TODO: Remove duplication
-    public  PersonObjectClients getClients() {
-        return personObjectClientsCache.get(person_CLIENTS_LIST, new CacheableData<PersonObjectClients>() {
+    public CommonPersonObjectClients getClients() {
+        return personObjectClientsCache.get(person_CLIENTS_LIST, new CacheableData<CommonPersonObjectClients>() {
 
 
                     @Override
-                    public PersonObjectClients fetch() {
-                        List<PersonObject> p = allpersonobjects.all();
-                        PersonObjectClients pClients = new PersonObjectClients();
+                    public CommonPersonObjectClients fetch() {
+                        List<CommonPersonObject> p = allpersonobjects.all();
+                        CommonPersonObjectClients pClients = new CommonPersonObjectClients();
 
-                        for (PersonObject personinlist : p) {
-                            PersonObjectClient pClient = new PersonObjectClient(personinlist.getCaseId(),personinlist.getDetails(),personinlist.getDetails().get(nameString));
+                        for (CommonPersonObject personinlist : p) {
+                            CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(),personinlist.getDetails(),personinlist.getDetails().get(nameString));
 
 
                             pClients.add(pClient);
@@ -84,7 +84,7 @@ public class PersonObjectController {
                     @Override
                     public int compare(SmartRegisterClient personClient, SmartRegisterClient personClient2) {
 
-                        return ((PersonObjectClient)personClient).getName().compareToIgnoreCase(((PersonObjectClient)personClient2).getName());
+                        return ((CommonPersonObjectClient)personClient).getName().compareToIgnoreCase(((CommonPersonObjectClient)personClient2).getName());
                     }
                 });
             }

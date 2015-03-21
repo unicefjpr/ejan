@@ -5,14 +5,10 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import org.ei.drishti.commonregistry.AllCommonsRepository;
-import org.ei.drishti.commonregistry.PersonObject;
-import org.ei.drishti.commonregistry.PersonObjectClients;
-import org.ei.drishti.commonregistry.RepositoryInformationHolder;
-import org.ei.drishti.commonregistry.commonRepository;
+import org.ei.drishti.commonregistry.CommonPersonObjectClients;
+import org.ei.drishti.commonregistry.CommonRepository;
+import org.ei.drishti.commonregistry.CommonRepositoryInformationHolder;
 import org.ei.drishti.repository.*;
 import org.ei.drishti.service.*;
 import org.ei.drishti.service.formSubmissionHandler.*;
@@ -27,12 +23,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
@@ -86,7 +80,7 @@ public class Context {
     private Cache<PNCClients> pncClientsCache;
     private Cache<Villages> villagesCache;
     private Cache<Typeface> typefaceCache;
-    private Cache<PersonObjectClients> personObjectClientsCache;
+    private Cache<CommonPersonObjectClients> personObjectClientsCache;
 
     private HTTPAgent httpAgent;
     private ZiggyFileLoader ziggyFileLoader;
@@ -125,7 +119,7 @@ public class Context {
     private DristhiConfiguration configuration;
 
     ///////////////////common bindtypes///////////////
-    public static ArrayList<RepositoryInformationHolder> bindtypes;
+    public static ArrayList<CommonRepositoryInformationHolder> bindtypes;
     /////////////////////////////////////////////////
     protected Context() {
     }
@@ -731,9 +725,9 @@ public class Context {
 
 
     ///////////////////////////////// common methods ///////////////////////////////
-    public  Cache <PersonObjectClients> personObjectClientsCache(){
+    public  Cache <CommonPersonObjectClients> personObjectClientsCache(){
         this.personObjectClientsCache = null;
-        personObjectClientsCache = new Cache<PersonObjectClients>();
+        personObjectClientsCache = new Cache<CommonPersonObjectClients>();
         return personObjectClientsCache;
     }
     public AllCommonsRepository allCommonsRepositoryobjects(String tablename){
@@ -742,15 +736,15 @@ public class Context {
         return allCommonPersonObjectsRepository;
     }
 
-    private HashMap <String ,commonRepository > MapOfCommonRepository;
+    private HashMap <String ,CommonRepository> MapOfCommonRepository;
 
     public long countofcommonrepositroy(String tablename){
         return commonrepository(tablename).count();
     }
 
-    public commonRepository commonrepository(String tablename){
+    public CommonRepository commonrepository(String tablename){
         if(MapOfCommonRepository == null){
-            MapOfCommonRepository = new HashMap<String, commonRepository>();
+            MapOfCommonRepository = new HashMap<String, CommonRepository>();
         }
         if(MapOfCommonRepository.get(tablename) == null){
             int index = 0;
@@ -759,13 +753,13 @@ public class Context {
                     index = i;
                 }
             }
-            MapOfCommonRepository.put(bindtypes.get(index).getBindtypename(),new commonRepository(bindtypes.get(index).getBindtypename(),bindtypes.get(index).getColumnNames()));
+            MapOfCommonRepository.put(bindtypes.get(index).getBindtypename(),new CommonRepository(bindtypes.get(index).getBindtypename(),bindtypes.get(index).getColumnNames()));
         }
 
         return  MapOfCommonRepository.get(tablename);
     }
     public void assignbindtypes(){
-        bindtypes = new ArrayList<RepositoryInformationHolder>();
+        bindtypes = new ArrayList<CommonRepositoryInformationHolder>();
         AssetManager assetManager = getInstance().applicationContext().getAssets();
 
         try {
@@ -779,7 +773,7 @@ public class Context {
                 for(int j = 0 ; j < columNames.length;j++){
                   columNames[j] =  bindtypeObjects.getJSONObject(i).getJSONArray("columns").getJSONObject(j).getString("name");
                 }
-                bindtypes.add(new RepositoryInformationHolder(bindname,columNames));
+                bindtypes.add(new CommonRepositoryInformationHolder(bindname,columNames));
                 Log.v("bind type logs",bindtypeObjects.getJSONObject(i).getString("name"));
             }
         } catch (Exception e) {

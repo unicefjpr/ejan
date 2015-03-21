@@ -5,13 +5,13 @@ import java.util.Map;
 /**
  * Created by user on 2/12/15.
  */
-public class PersonObject {
+public class CommonPersonObject {
     private String caseId;
     private Map<String, String> details;
     private String type;
     private String relationalid;
 
-    public PersonObject(String caseId, String relationalid ,Map<String, String> details, String type) {
+    public CommonPersonObject(String caseId, String relationalid, Map<String, String> details, String type) {
         this.details = details;
         this.caseId = caseId;
         this.type = type;

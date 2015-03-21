@@ -7,7 +7,6 @@ import com.google.gson.reflect.TypeToken;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.ei.drishti.Context;
-import org.ei.drishti.commonregistry.commonRepository;
 import org.ei.drishti.domain.SyncStatus;
 import org.ei.drishti.domain.form.FormSubmission;
 

@@ -20,7 +20,7 @@ import java.util.Map;
 import static net.sqlcipher.DatabaseUtils.longForQuery;
 import static org.apache.commons.lang3.StringUtils.repeat;
 
-public class commonRepository extends DrishtiRepository {
+public class CommonRepository extends DrishtiRepository {
     private String common_SQL = "CREATE TABLE common(id VARCHAR PRIMARY KEY,details VARCHAR)";
     public static final String ID_COLUMN = "id";
     public static final String Relational_ID = "relationalid";
@@ -28,7 +28,7 @@ public class commonRepository extends DrishtiRepository {
     public String TABLE_NAME = "common";
     public  String[] common_TABLE_COLUMNS = new String[]{ID_COLUMN,Relational_ID,DETAILS_COLUMN};
 
-    public commonRepository(String tablename,String [] columns) {
+    public CommonRepository(String tablename, String[] columns) {
         super();
         common_TABLE_COLUMNS = ArrayUtils.addAll(common_TABLE_COLUMNS,columns);
         TABLE_NAME = tablename;
@@ -44,7 +44,7 @@ public class commonRepository extends DrishtiRepository {
         database.execSQL(common_SQL);
     }
 
-    public void add(PersonObject common) {
+    public void add(CommonPersonObject common) {
         SQLiteDatabase database = masterRepository.getWritableDatabase();
         database.insert(TABLE_NAME, null, createValuesFor(common));
     }
@@ -52,7 +52,7 @@ public class commonRepository extends DrishtiRepository {
     public void updateDetails(String caseId, Map<String, String> details) {
         SQLiteDatabase database = masterRepository.getWritableDatabase();
 
-        PersonObject common = findByCaseID(caseId);
+        CommonPersonObject common = findByCaseID(caseId);
         if (common == null) {
             return;
         }
@@ -65,7 +65,7 @@ public class commonRepository extends DrishtiRepository {
     public void mergeDetails(String caseId, Map<String, String> details) {
         SQLiteDatabase database = masterRepository.getWritableDatabase();
 
-        PersonObject common = findByCaseID(caseId);
+        CommonPersonObject common = findByCaseID(caseId);
         if (common == null) {
             return;
         }
@@ -77,24 +77,24 @@ public class commonRepository extends DrishtiRepository {
         database.update(TABLE_NAME, valuesToUpdate, ID_COLUMN + " = ?", new String[]{caseId});
     }
 
-    public List<PersonObject> allcommon() {
+    public List<CommonPersonObject> allcommon() {
         SQLiteDatabase database = masterRepository.getReadableDatabase();
         Cursor cursor = database.query(TABLE_NAME, common_TABLE_COLUMNS, null, null, null, null, null, null);
         return readAllcommon(cursor);
     }
 
-    public List<PersonObject> findByCaseIDs(String... caseIds) {
+    public List<CommonPersonObject> findByCaseIDs(String... caseIds) {
         SQLiteDatabase database = masterRepository.getReadableDatabase();
         Cursor cursor = database.rawQuery(String.format("SELECT * FROM %s WHERE %s IN (%s)", TABLE_NAME, ID_COLUMN,
                 insertPlaceholdersForInClause(caseIds.length)), caseIds);
         return readAllcommon(cursor);
     }
 
-    public PersonObject findByCaseID(String caseId) {
+    public CommonPersonObject findByCaseID(String caseId) {
         SQLiteDatabase database = masterRepository.getReadableDatabase();
         Cursor cursor = database.query(TABLE_NAME, common_TABLE_COLUMNS, ID_COLUMN + " = ?", new String[]{caseId},
                 null, null, null, null);
-        List<PersonObject> commons = readAllcommon(cursor);
+        List<CommonPersonObject> commons = readAllcommon(cursor);
         if (commons.isEmpty()) {
             return null;
         }
@@ -113,7 +113,7 @@ public class commonRepository extends DrishtiRepository {
 //        masterRepository.getWritableDatabase().update(EC_TABLE_NAME, values, ID_COLUMN + " = ?", new String[]{caseId});
     }
 
-    private ContentValues createValuesFor(PersonObject common) {
+    private ContentValues createValuesFor(CommonPersonObject common) {
         ContentValues values = new ContentValues();
         values.put(ID_COLUMN, common.getCaseId());
         values.put(Relational_ID, common.getRelationalId());
@@ -121,11 +121,11 @@ public class commonRepository extends DrishtiRepository {
         return values;
     }
 
-    private List<PersonObject> readAllcommon(Cursor cursor) {
+    private List<CommonPersonObject> readAllcommon(Cursor cursor) {
         cursor.moveToFirst();
-        List<PersonObject> commons = new ArrayList<PersonObject>();
+        List<CommonPersonObject> commons = new ArrayList<CommonPersonObject>();
         while (!cursor.isAfterLast()) {
-            PersonObject common = new PersonObject(cursor.getString(0),cursor.getString(1),new Gson().<Map<String, String>>fromJson(cursor.getString(2), new TypeToken<Map<String, String>>() {
+            CommonPersonObject common = new CommonPersonObject(cursor.getString(0),cursor.getString(1),new Gson().<Map<String, String>>fromJson(cursor.getString(2), new TypeToken<Map<String, String>>() {
                     }.getType()),TABLE_NAME);
 
             commons.add(common);
