@@ -46,6 +46,7 @@ public class CommonPersonObjectController {
                 for (CommonPersonObject personinlist : p) {
                       CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(),personinlist.getDetails(),personinlist.getDetails().get(nameString));
 //                    pClient.entityID = personinlist.getCaseId();
+                    pClient.setColumnmaps(personinlist.getColumnmaps());
                     pClients.add(pClient);
                 }
                 sortByName(pClients);
@@ -67,7 +68,7 @@ public class CommonPersonObjectController {
                         for (CommonPersonObject personinlist : p) {
                             CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(),personinlist.getDetails(),personinlist.getDetails().get(nameString));
 
-
+                            pClient.setColumnmaps(personinlist.getColumnmaps());
                             pClients.add(pClient);
                         }
                         sortByName(pClients);
