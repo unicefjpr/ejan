@@ -27,9 +27,10 @@ public class CommonRepository extends DrishtiRepository {
     public static final String DETAILS_COLUMN = "details";
     public String TABLE_NAME = "common";
     public  String[] common_TABLE_COLUMNS = new String[]{ID_COLUMN,Relational_ID,DETAILS_COLUMN};
-
+    public String [] additionalcolumns;
     public CommonRepository(String tablename, String[] columns) {
         super();
+        additionalcolumns = columns;
         common_TABLE_COLUMNS = ArrayUtils.addAll(common_TABLE_COLUMNS,columns);
         TABLE_NAME = tablename;
         common_SQL = "CREATE TABLE "+ TABLE_NAME + "(id VARCHAR PRIMARY KEY,relationalid VARCHAR,";
@@ -125,8 +126,14 @@ public class CommonRepository extends DrishtiRepository {
         cursor.moveToFirst();
         List<CommonPersonObject> commons = new ArrayList<CommonPersonObject>();
         while (!cursor.isAfterLast()) {
-            CommonPersonObject common = new CommonPersonObject(cursor.getString(0),cursor.getString(1),new Gson().<Map<String, String>>fromJson(cursor.getString(2), new TypeToken<Map<String, String>>() {
+            int columncount = cursor.getColumnCount();
+            HashMap <String, String> columns = new HashMap<String, String>();
+            for (int i = 2;i < columncount-2;i++ ){
+                columns.put(additionalcolumns[i-2],cursor.getString(i));
+            }
+            CommonPersonObject common = new CommonPersonObject(cursor.getString(0),cursor.getString(1),new Gson().<Map<String, String>>fromJson(cursor.getString(columncount-1), new TypeToken<Map<String, String>>() {
                     }.getType()),TABLE_NAME);
+            common.setColumnmaps(columns);
 
             commons.add(common);
             cursor.moveToNext();
