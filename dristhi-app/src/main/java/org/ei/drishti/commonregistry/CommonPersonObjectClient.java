@@ -12,6 +12,16 @@ public class CommonPersonObjectClient implements SmartRegisterClient{
     private Map<String, String> details;
     public String name = "";
 
+    public Map<String, String> getColumnmaps() {
+        return columnmaps;
+    }
+
+    public void setColumnmaps(Map<String, String> columnmaps) {
+        this.columnmaps = columnmaps;
+    }
+
+    private Map<String, String> columnmaps;
+
     public CommonPersonObjectClient(String caseId, Map<String, String> details, String name) {
         this.caseId = caseId;
         this.details = details;
