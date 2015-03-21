@@ -10,6 +10,17 @@ public class CommonPersonObject {
     private Map<String, String> details;
     private String type;
     private String relationalid;
+    private Map<String, String> columnmaps;
+
+    public Map<String, String> getColumnmaps() {
+        return columnmaps;
+    }
+
+    public void setColumnmaps(Map<String, String> columnmaps) {
+        this.columnmaps = columnmaps;
+    }
+
+
 
     public CommonPersonObject(String caseId, String relationalid, Map<String, String> details, String type) {
         this.details = details;
