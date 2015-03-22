@@ -37,7 +37,9 @@ public class AllCommonsRepository {
         return personRepository.findByCaseIDs(caseIds.toArray(new String[caseIds.size()]));
     }
 
-
+    public List<CommonPersonObject> findByRelationalIDs(List<String> RelationalID) {
+        return personRepository.findByRelationalIDs(RelationalID.toArray(new String[RelationalID.size()]));
+    }
 
     public void close(String entityId) {
         alertRepository.deleteAllAlertsForEntity(entityId);
