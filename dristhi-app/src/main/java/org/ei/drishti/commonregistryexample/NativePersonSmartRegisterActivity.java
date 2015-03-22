@@ -4,6 +4,7 @@ import android.view.View;
 
 import org.ei.drishti.R;
 import org.ei.drishti.adapter.SmartRegisterPaginatedAdapter;
+import org.ei.drishti.commonregistry.CommonObjectSort;
 import org.ei.drishti.commonregistry.CommonPersonObjectController;
 import org.ei.drishti.provider.SmartRegisterClientsProvider;
 import org.ei.drishti.view.activity.SecuredNativeSmartRegisterActivity;
@@ -89,7 +90,7 @@ public class NativePersonSmartRegisterActivity extends SecuredNativeSmartRegiste
             public DialogOption[] sortingOptions() {
                 return new DialogOption[]{new NameSort(), new ECNumberSort(),
                         new HighPrioritySort(), new BPLSort(),
-                        new SCSort(), new STSort()};
+                        new SCSort(), new STSort(),new CommonObjectSort(true,false,true,"age")};
             }
 
             @Override
