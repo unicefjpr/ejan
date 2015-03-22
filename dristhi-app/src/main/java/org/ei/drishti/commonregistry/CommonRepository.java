@@ -90,6 +90,12 @@ public class CommonRepository extends DrishtiRepository {
                 insertPlaceholdersForInClause(caseIds.length)), caseIds);
         return readAllcommon(cursor);
     }
+    public List<CommonPersonObject> findByRelationalIDs(String... caseIds) {
+        SQLiteDatabase database = masterRepository.getReadableDatabase();
+        Cursor cursor = database.rawQuery(String.format("SELECT * FROM %s WHERE %s IN (%s)", TABLE_NAME, Relational_ID,
+                insertPlaceholdersForInClause(caseIds.length)), caseIds);
+        return readAllcommon(cursor);
+    }
 
     public CommonPersonObject findByCaseID(String caseId) {
         SQLiteDatabase database = masterRepository.getReadableDatabase();
