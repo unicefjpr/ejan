@@ -128,10 +128,10 @@ public class CommonRepository extends DrishtiRepository {
         while (!cursor.isAfterLast()) {
             int columncount = cursor.getColumnCount();
             HashMap <String, String> columns = new HashMap<String, String>();
-            for (int i = 2;i < columncount-2;i++ ){
-                columns.put(additionalcolumns[i-2],cursor.getString(i));
+            for (int i = 3;i < columncount;i++ ){
+                columns.put(additionalcolumns[i-3],cursor.getString(i));
             }
-            CommonPersonObject common = new CommonPersonObject(cursor.getString(0),cursor.getString(1),new Gson().<Map<String, String>>fromJson(cursor.getString(columncount-1), new TypeToken<Map<String, String>>() {
+            CommonPersonObject common = new CommonPersonObject(cursor.getString(0),cursor.getString(1),new Gson().<Map<String, String>>fromJson(cursor.getString(2), new TypeToken<Map<String, String>>() {
                     }.getType()),TABLE_NAME);
             common.setColumnmaps(columns);
 
