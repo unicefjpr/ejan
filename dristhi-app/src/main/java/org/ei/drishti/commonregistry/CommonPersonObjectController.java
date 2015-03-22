@@ -66,10 +66,12 @@ public class CommonPersonObjectController {
                         CommonPersonObjectClients pClients = new CommonPersonObjectClients();
 
                         for (CommonPersonObject personinlist : p) {
-                            CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(),personinlist.getDetails(),personinlist.getDetails().get(nameString));
+                            try {
+                                CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get(nameString));
 
-                            pClient.setColumnmaps(personinlist.getColumnmaps());
-                            pClients.add(pClient);
+                                pClient.setColumnmaps(personinlist.getColumnmaps());
+                                pClients.add(pClient);
+                            }catch (Exception e){}
                         }
                         sortByName(pClients);
                         return pClients;
