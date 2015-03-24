@@ -6,6 +6,7 @@ import org.ei.drishti.R;
 import org.ei.drishti.adapter.SmartRegisterPaginatedAdapter;
 import org.ei.drishti.commonregistry.CommonObjectSort;
 import org.ei.drishti.commonregistry.CommonPersonObjectController;
+import org.ei.drishti.domain.form.FieldOverrides;
 import org.ei.drishti.provider.SmartRegisterClientsProvider;
 import org.ei.drishti.view.activity.SecuredNativeSmartRegisterActivity;
 import org.ei.drishti.view.contract.ECClient;
@@ -135,8 +136,8 @@ public class NativePersonSmartRegisterActivity extends SecuredNativeSmartRegiste
 
     @Override
     protected void startRegistration() {
-//        FieldOverrides fieldOverrides = new FieldOverrides(context.anmLocationController().getLocationJSON());
-        startFormActivity("tb_registration", null,null);
+        FieldOverrides fieldOverrides = new FieldOverrides(context.anmLocationController().getLocationJSON());
+        startFormActivity("hh_reg", null,fieldOverrides.getJSONString());
     }
 
     private class ClientActionHandler implements View.OnClickListener {
