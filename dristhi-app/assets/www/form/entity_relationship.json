@@ -1,6 +1,15 @@
 [
+
     {
-        "parent": "eligible_couple",
+            "parent": "household",
+            "child": "test_eligible_couple",
+            "field": "children",
+            "kind": "one_to_many",
+            "from": "household.id",
+            "to": "test_eligible_couple.relationalid"
+    },
+    {
+        "parent": "test_eligible_couple",
         "child": "mother",
         "field": "wife",
         "kind": "one_to_one",
