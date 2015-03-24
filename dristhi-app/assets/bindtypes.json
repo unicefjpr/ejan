@@ -1,20 +1,15 @@
 {
     "bindobjects":
  [
-    {
-      "name": "person",
-      "columns" : [ {"name": "age"}]
-    },
-    {
-      "name": "mamoni_pregnant_woman",
-      "columns" : [ {"name":"pregID"},{"name":"PW_AGE"}]
-    },{
+          {
             "name": "household",
             "columns" : [ ]
           },
           {
             "name": "test_eligible_couple",
-            "columns" : [ ]
+            "columns" : [
+                { "name" : "woman_name" }
+            ]
           }
  ]
 }

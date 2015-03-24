@@ -54,6 +54,10 @@
     <string name="tb_header_treatment">TREATMENT</string>
     <string name="tb_header_labresults">LAB RESULTS</string>
 
+    <string name="hh_woman_name">WOMAN NAME</string>
+    <string name="hh_husband_name">HUSBAND NAME</string>
+    <string name="hh_name">HOUSEHOLD NAME</string>
+
         <!--mamoni eligible couple-->
     <string name="mamoniname">NAME</string>
     <string name="mamonihhid">HHID</string>

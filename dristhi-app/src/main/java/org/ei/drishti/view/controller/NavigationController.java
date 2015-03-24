@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import org.ei.drishti.commonregistryexample.NativePersonSmartRegisterActivity;
+import org.ei.drishti.dhakasprintregistry.NativeDhakaSmartRegisterActivity;
 import org.ei.drishti.mamoni.elco.MamoniELigibleCoupleSmartRegisterActivity;
 import org.ei.drishti.mamoni.pw.MamoniANCRegisterActivity;
 import org.ei.drishti.view.activity.*;
@@ -29,8 +30,9 @@ public class NavigationController {
 
     public void startECSmartRegistry() {
 //        activity.startActivity(new Intent(activity, NativeECSmartRegisterActivity.class));
-        activity.startActivity(new Intent(activity, NativePersonSmartRegisterActivity.class));
+//        activity.startActivity(new Intent(activity, NativePersonSmartRegisterActivity.class));
 //        activity.startActivity(new Intent(activity, MamoniELigibleCoupleSmartRegisterActivity.class));
+        activity.startActivity(new Intent(activity, NativeDhakaSmartRegisterActivity.class));
     }
 
     public void startFPSmartRegistry() {

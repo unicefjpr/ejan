@@ -170,12 +170,15 @@
                 android:screenOrientation="landscape"
                 android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
 
-
         <activity
                 android:name=".view.activity.NativePNCSmartRegisterActivity"
                 android:screenOrientation="landscape"
                 android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
 
+        <activity
+            android:name=".dhakasprintregistry.NativeDhakaSmartRegisterActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
 
         <activity android:name=".view.activity.NativeHomeActivity"
                   android:screenOrientation="landscape">
