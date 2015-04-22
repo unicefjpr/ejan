@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<root><model>
+    <instance>
+        <hh_reg id="hh_reg" version="201503231156">
+          <formhub>
+            <uuid/>
+          </formhub>
+          <HH_ID/>
+          <HH_Name/>
+          <ec_repeat template="">
+            <woman_name/>
+            <husband_name/>
+            <EC_HH_ID/>
+            <EC_HH_Name/>
+            <note/>
+            <raihan_text/>
+          </ec_repeat>
+          <meta>
+            <instanceID/>
+          </meta>
+        </hh_reg>
+      </instance>
+  </model><form autocomplete="off" novalidate="novalidate" class="or clearfix" id="hh_reg">
+<!--This form was created by transforming a OpenRosa-flavored (X)Form using an XSLT sheet created by Enketo LLC.--><section class="form-logo"> </section><h3 id="form-title">Household Registration</h3>
+  
+  
+    <label class="question non-select "><span lang="" class="question-label active">Household ID</span><input type="number" name="/hh_reg/HH_ID" data-type-xml="int"/></label>
+    <label class="question non-select "><span lang="" class="question-label active">Head of Household Name</span><input type="text" name="/hh_reg/HH_Name" data-type-xml="string"/></label>
+    <section class="or-group " name="/hh_reg/ec_repeat"><h4><span lang="" class="question-label active">Record the following for each ELCO in this household:</span></h4><section class="or-repeat " name="/hh_reg/ec_repeat"><label class="question non-select "><span lang="" class="question-label active">Wife's name</span><input type="text" name="/hh_reg/ec_repeat/woman_name" data-type-xml="string"/></label><label class="question non-select "><span lang="" class="question-label active">Husband's name</span><input type="text" name="/hh_reg/ec_repeat/husband_name" data-type-xml="string"/></label><label class="note non-select "><span lang="" class="question-label active">Here is a note!</span><input type="text" name="/hh_reg/ec_repeat/note" data-type-xml="string" readonly="readonly"/></label><label class="question non-select "><span lang="" class="question-label active">Raihan's Text Field</span><input type="text" name="/hh_reg/ec_repeat/raihan_text" data-type-xml="string"/></label>
+            </section><!--end of repeat fieldset with name /hh_reg/ec_repeat-->
+            </section><!--end of group -->
+  
+<fieldset id="or-calculated-items" style="display:none;"><label class="calculation non-select "><input type="hidden" name="/hh_reg/ec_repeat/EC_HH_ID" data-calculate=" /hh_reg/HH_ID " data-type-xml="string"/></label><label class="calculation non-select "><input type="hidden" name="/hh_reg/ec_repeat/EC_HH_Name" data-calculate=" /hh_reg/HH_Name " data-type-xml="string"/></label><label class="calculation non-select "><input type="hidden" name="/hh_reg/meta/instanceID" data-calculate="concat('uuid:', uuid())" data-type-xml="string"/></label><label class="calculation non-select "><input type="hidden" name="/hh_reg/formhub/uuid" data-calculate="'e29b3443bc7f49d19c42d074348f4d26'" data-type-xml="string"/></label></fieldset></form><xsltmessages><message level="0">XML to HTML transformation for form took 0.01 seconds</message></xsltmessages><jrvalidationmessages><message level="1">This validation is yet not functional.</message></jrvalidationmessages><xmlerrors/><xslformerrors/><xsldataerrors/></root>

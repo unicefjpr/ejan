@@ -1,0 +1,22 @@
+<model>
+    <instance>
+        <hh_reg id="hh_reg" version="201503231156">
+          <formhub>
+            <uuid/>
+          </formhub>
+          <HH_ID/>
+          <HH_Name/>
+          <ec_repeat template="">
+            <woman_name/>
+            <husband_name/>
+            <EC_HH_ID/>
+            <EC_HH_Name/>
+            <note/>
+            <raihan_text/>
+          </ec_repeat>
+          <meta>
+            <instanceID/>
+          </meta>
+        </hh_reg>
+      </instance>
+  </model>

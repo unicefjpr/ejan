@@ -1,0 +1,54 @@
+{
+  "form_data_definition_version": "1",
+  "form": {
+    "default_bind_path": "/model/instance/hh_reg",
+    "bind_type": "household",
+    "fields": [
+      {
+        "name": "id",
+        "shouldLoadValue": true
+      },
+      {
+        "name": "HH_ID",
+        "bind": "/model/instance/hh_reg/HH_ID"
+      },
+      {
+        "name": "HH_Name",
+        "bind": "/model/instance/hh_reg/HH_Name"
+      }
+    ],
+    "sub_forms": [
+      {
+        "name": "ec_repeat",
+        "bind_type": "test_eligible_couple",
+        "default_bind_path": "/model/instance/hh_reg/ec_repeat",
+        "fields": [
+          {
+            "name": "id",
+            "shouldLoadValue": true
+          },
+          {
+            "name": "woman_name",
+            "bind": "/model/instance/hh_reg/ec_repeat/woman_name"
+          },
+          {
+            "name": "husband_name",
+            "bind": "/model/instance/hh_reg/ec_repeat/husband_name"
+          },
+          {
+            "name": "EC_HH_ID",
+            "bind": "/model/instance/hh_reg/ec_repeat/EC_HH_ID"
+          },
+          {
+            "name": "EC_HH_Name",
+            "bind": "/model/instance/hh_reg/ec_repeat/EC_HH_Name"
+          },
+          {
+            "name": "note",
+            "bind": "/model/instance/hh_reg/ec_repeat/note"
+          }
+        ]
+      }
+    ]
+  }
+}
