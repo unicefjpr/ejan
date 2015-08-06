@@ -19,6 +19,11 @@ public class SmartRegisterPaginatedAdapter extends BaseAdapter {
     private SmartRegisterClients filteredClients;
 
     private final int clientsPerPage;
+
+    public SmartRegisterClientsProvider getListItemProvider() {
+        return listItemProvider;
+    }
+
     private final SmartRegisterClientsProvider listItemProvider;
 
     public SmartRegisterPaginatedAdapter(SmartRegisterClientsProvider listItemProvider) {
@@ -32,7 +37,7 @@ public class SmartRegisterPaginatedAdapter extends BaseAdapter {
         refreshClients(listItemProvider.getClients());
     }
 
-    private void refreshClients(SmartRegisterClients filteredClients) {
+    public void refreshClients(SmartRegisterClients filteredClients) {
         this.filteredClients = filteredClients;
         clientCount = filteredClients.size();
         pageCount = (int) Math.ceil((double) clientCount / (double) clientsPerPage);

@@ -45,10 +45,47 @@ public abstract class SecuredNativeSmartRegisterActivity extends SecuredActivity
     private View searchCancelView;
     private TextView titleLabelView;
 
+    public EditText getSearchView() {
+        return searchView;
+    }
+
+    public View getSearchCancelView() {
+        return searchCancelView;
+    }
+
+    public FilterOption getCurrentVillageFilter() {
+        return currentVillageFilter;
+    }
+
+    public FilterOption getCurrentSearchFilter() {
+        return currentSearchFilter;
+    }
+
+    public SortOption getCurrentSortOption() {
+        return currentSortOption;
+    }
+
+    public ServiceModeOption getCurrentServiceModeOption() {
+        return currentServiceModeOption;
+    }
+
+    public SmartRegisterPaginatedAdapter getClientsAdapter() {
+        return clientsAdapter;
+    }
+
+    public void setClientsAdapter(SmartRegisterPaginatedAdapter clientsAdapter) {
+        this.clientsAdapter = clientsAdapter;
+    }
+
     private SmartRegisterPaginatedAdapter clientsAdapter;
 
     private FilterOption currentVillageFilter;
     private SortOption currentSortOption;
+
+    public void setCurrentSearchFilter(FilterOption currentSearchFilter) {
+        this.currentSearchFilter = currentSearchFilter;
+    }
+
     private FilterOption currentSearchFilter;
     private ServiceModeOption currentServiceModeOption;
 
@@ -312,7 +349,7 @@ public abstract class SecuredNativeSmartRegisterActivity extends SecuredActivity
         showFragmentDialog(dialogOptionModel, null);
     }
 
-    void showFragmentDialog(DialogOptionModel dialogOptionModel, Object tag) {
+    protected void showFragmentDialog(DialogOptionModel dialogOptionModel, Object tag) {
         if (dialogOptionModel.getDialogOptions().length <= 0) {
             return;
         }
