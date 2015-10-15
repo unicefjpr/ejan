@@ -1,6 +1,6 @@
 package org.ei.opensrp.mcare;
 
-import android.app.ActionBar;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -103,9 +103,9 @@ public class NativeHomeActivity extends SecuredActivity {
         SYNC_COMPLETED.addListener(onSyncCompleteListener);
         FORM_SUBMITTED.addListener(onFormSubmittedListener);
         ACTION_HANDLED.addListener(updateANMDetailsListener);
-        ActionBar actionBar = getActionBar();
-        getActionBar().setTitle("");
-        getActionBar().setIcon(getResources().getDrawable(R.drawable.logo));
+        ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setIcon(getResources().getDrawable(R.drawable.logo));
         actionBar.setLogo(R.drawable.logo);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);

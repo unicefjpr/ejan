@@ -1,18 +1,9 @@
-package org.ei.opensrp.mcare.household;
+package org.ei.opensrp.mcare.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-
-import org.ei.opensrp.domain.form.FormSubmission;
-import org.ei.opensrp.mcare.R;
 
 import org.ei.opensrp.Context;
 import org.ei.opensrp.adapter.SmartRegisterPaginatedAdapter;
@@ -20,12 +11,18 @@ import org.ei.opensrp.commonregistry.CommonObjectFilterOption;
 import org.ei.opensrp.commonregistry.CommonObjectSort;
 import org.ei.opensrp.commonregistry.CommonPersonObjectClient;
 import org.ei.opensrp.commonregistry.CommonPersonObjectController;
-import org.ei.opensrp.mcare.pageradapter.HouseHoldActivityPagerAdapter;
+import org.ei.opensrp.mcare.R;
+import org.ei.opensrp.mcare.household.CensusEnrollmentHandler;
+import org.ei.opensrp.mcare.household.HHMWRAEXISTFilterOption;
+import org.ei.opensrp.mcare.household.HHSearchOption;
+import org.ei.opensrp.mcare.household.HouseHoldDetailActivity;
+import org.ei.opensrp.mcare.household.HouseHoldServiceModeOption;
+import org.ei.opensrp.mcare.household.HouseHoldSmartClientsProvider;
+import org.ei.opensrp.mcare.household.HouseHoldSmartRegisterActivity;
+import org.ei.opensrp.mcare.household.HouseholdCensusDueDateSort;
+import org.ei.opensrp.mcare.household.NOHHMWRAEXISTFilterOption;
 import org.ei.opensrp.provider.SmartRegisterClientsProvider;
-import org.ei.opensrp.service.ZiggyService;
-import org.ei.opensrp.util.FormUtils;
 import org.ei.opensrp.util.StringUtil;
-import org.ei.opensrp.view.activity.FormActivity;
 import org.ei.opensrp.view.activity.SecuredNativeSmartRegisterActivity;
 import org.ei.opensrp.view.contract.ECClient;
 import org.ei.opensrp.view.contract.SmartRegisterClient;
@@ -37,13 +34,10 @@ import org.ei.opensrp.view.dialog.DialogOptionMapper;
 import org.ei.opensrp.view.dialog.DialogOptionModel;
 import org.ei.opensrp.view.dialog.EditOption;
 import org.ei.opensrp.view.dialog.FilterOption;
-import org.ei.opensrp.view.dialog.LocationSelectorDialogFragment;
 import org.ei.opensrp.view.dialog.OpenFormOption;
 import org.ei.opensrp.view.dialog.ServiceModeOption;
 import org.ei.opensrp.view.dialog.SortOption;
-import org.ei.opensrp.view.fragment.DisplayFormFragment;
 import org.ei.opensrp.view.fragment.SecuredNativeSmartRegisterFragment;
-import org.ei.opensrp.view.viewpager.SampleViewPager;
 import org.opensrp.api.domain.Location;
 import org.opensrp.api.util.EntityUtils;
 import org.opensrp.api.util.LocationTree;
@@ -53,15 +47,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import util.AsyncTask;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterActivity {
+/**
+ * Created by koros on 10/12/15.
+ */
+public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFragment {
 
     private SmartRegisterClientsProvider clientProvider = null;
     private CommonPersonObjectController controller;
@@ -71,34 +66,9 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
     private final ClientActionHandler clientActionHandler = new ClientActionHandler();
     private String locationDialogTAG = "locationDialogTAG";
 
-
-    @Bind(R.id.view_pager) SampleViewPager mPager;
-    private FragmentPagerAdapter mPagerAdapter;
-    private int currentPage;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPagerAdapter = new HouseHoldActivityPagerAdapter(getSupportFragmentManager());
-        mPager.setOffscreenPageLimit(2); // prevent the offscreen fragments from being destroyed
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                currentPage = position;
-                onPageChanged(position);
-            }
-        });
-
-        onPageChanged(0);
-    }
-
-    public void onPageChanged(int page){
-        //setRequestedOrientation(page == 0 ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    protected void onCreation() {
+        //
     }
 
     @Override
@@ -107,8 +77,8 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
     }
 
     @Override
-    protected DefaultOptionsProvider getDefaultOptionsProvider() {
-        return new DefaultOptionsProvider() {
+    protected SecuredNativeSmartRegisterActivity.DefaultOptionsProvider getDefaultOptionsProvider() {
+        return new SecuredNativeSmartRegisterActivity.DefaultOptionsProvider() {
 
             @Override
             public ServiceModeOption serviceMode() {
@@ -122,7 +92,7 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
 
             @Override
             public SortOption sortOption() {
-               return new HouseholdCensusDueDateSort();
+                return new HouseholdCensusDueDateSort();
 
             }
 
@@ -134,8 +104,8 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
     }
 
     @Override
-    protected NavBarOptionsProvider getNavBarOptionsProvider() {
-        return new NavBarOptionsProvider() {
+    protected SecuredNativeSmartRegisterActivity.NavBarOptionsProvider getNavBarOptionsProvider() {
+        return new SecuredNativeSmartRegisterActivity.NavBarOptionsProvider() {
 
             @Override
             public DialogOption[] filterOptions() {
@@ -146,20 +116,18 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
                 dialogOptionslist.add( new NOHHMWRAEXISTFilterOption("0","MWRA", NOHHMWRAEXISTFilterOption.ByColumnAndByDetails.byDetails));
                 dialogOptionslist.add(new HHMWRAEXISTFilterOption("0","MWRA", HHMWRAEXISTFilterOption.ByColumnAndByDetails.byDetails));
 
-
-
                 String locationjson = context.anmLocationController().get();
                 LocationTree locationTree = EntityUtils.fromJson(locationjson, LocationTree.class);
 
                 Map<String,TreeNode<String, Location>> locationMap =
                         locationTree.getLocationsHierarchy();
-                    addChildToList(dialogOptionslist,locationMap);
-                        DialogOption[] dialogOptions = new DialogOption[dialogOptionslist.size()];
-                       for (int i = 0;i < dialogOptionslist.size();i++){
-                        dialogOptions[i] = dialogOptionslist.get(i);
-                       }
+                addChildToList(dialogOptionslist,locationMap);
+                DialogOption[] dialogOptions = new DialogOption[dialogOptionslist.size()];
+                for (int i = 0;i < dialogOptionslist.size();i++){
+                    dialogOptions[i] = dialogOptionslist.get(i);
+                }
 
-                               return  dialogOptions;
+                return  dialogOptions;
             }
 
             @Override
@@ -192,13 +160,13 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
     protected SmartRegisterClientsProvider clientsProvider() {
         if (clientProvider == null) {
             clientProvider = new HouseHoldSmartClientsProvider(
-                    this,clientActionHandler , controller,context.alertService());
+                    getActivity(),clientActionHandler , controller,context.alertService());
         }
         return clientProvider;
     }
 
     private DialogOption[] getEditOptions() {
-        HashMap <String,String> overridemap = new HashMap<String,String>();
+        HashMap<String,String> overridemap = new HashMap<String,String>();
         overridemap.put("existing_MWRA","MWRA");
         overridemap.put("existing_location","existing_location");
         return new DialogOption[]{
@@ -215,86 +183,22 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
         villageController = new VillageController(context.allEligibleCouples(),
                 context.listCache(), context.villagesCache());
         dialogOptionMapper = new DialogOptionMapper();
-        context.formSubmissionRouter().getHandlerMap().put("census_enrollment_form", new CensusEnrollmentHandler());
+        context.formSubmissionRouter().getHandlerMap().put("census_enrollment_form",new CensusEnrollmentHandler());
     }
 
     @Override
-    public void setupViews() {
+    public void setupViews(View view) {
         getDefaultOptionsProvider();
 
-        super.setupViews();
+        super.setupViews(view);
 
         setServiceModeViewDrawableRight(null);
         updateSearchView();
     }
 
     @Override
-    public void startRegistration() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag(locationDialogTAG);
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
-        LocationSelectorDialogFragment
-                .newInstance(this, new EditDialogOptionModel(), context.anmLocationController().get(), "new_household_registration")
-                .show(ft, locationDialogTAG);
-    }
-
-    @Override
-    public void startFormActivity(String formName, String entityId, String metaData) {
-        mPager.setCurrentItem(1, true);
-    }
-
-    @Override
-    public void saveFormSubmission(String formSubmission, String formName, Map<String, String> fieldOverrides){
-        // save the form
-        try{
-            FormUtils formUtils = FormUtils.getInstance(getApplicationContext());
-            FormSubmission submission = formUtils.generateFormSubmisionFromXMLString(formSubmission, formName, new HashMap<String, String>());
-
-            org.ei.opensrp.Context context = org.ei.opensrp.Context.getInstance();
-            ZiggyService ziggyService = context.ziggyService();
-            ziggyService.saveForm(getParams(submission), submission.instance());
-
-            //switch to forms list fragment
-            switchToSelectFormFragment(formSubmission); // Unnecessary!! passing on data
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public void switchToSelectFormFragment(final String data){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mPager.setCurrentItem(0, true);
-                SecuredNativeSmartRegisterFragment registerFragment = (SecuredNativeSmartRegisterFragment) findFragmentByPosition(0);
-                if (registerFragment != null && data != null) {
-                    registerFragment.refreshListView();
-                }
-
-                //hack reset the form
-                DisplayFormFragment displayFormFragment = getDisplayFormFragment();
-                if (displayFormFragment != null) {
-                    displayFormFragment.setFormData(null);
-                    displayFormFragment.loadFormData();
-                }
-
-                displayFormFragment.setRecordId(null);
-            }
-        });
-
-    }
-
-    public android.support.v4.app.Fragment findFragmentByPosition(int position) {
-        FragmentPagerAdapter fragmentPagerAdapter = mPagerAdapter;
-        return getSupportFragmentManager().findFragmentByTag("android:switcher:" + mPager.getId() + ":" + fragmentPagerAdapter.getItemId(position));
-    }
-
-    public DisplayFormFragment getDisplayFormFragment() {
-        return  (DisplayFormFragment)findFragmentByPosition(1);
+    protected void startRegistration() {
+        ((HouseHoldSmartRegisterActivity)getActivity()).startRegistration();
     }
 
     private class ClientActionHandler implements View.OnClickListener {
@@ -303,9 +207,9 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
             switch (view.getId()) {
                 case R.id.profile_info_layout:
                     HouseHoldDetailActivity.householdclient = (CommonPersonObjectClient)view.getTag();
-                    Intent intent = new Intent(HouseHoldSmartRegisterActivity.this,HouseHoldDetailActivity.class);
+                    Intent intent = new Intent(getActivity(),HouseHoldDetailActivity.class);
                     startActivity(intent);
-                    finish();
+                    getActivity().finish();
                     break;
                 case R.id.hh_due_date:
                     showFragmentDialog(new EditDialogOptionModel(), view.getTag());
@@ -390,24 +294,15 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
     public void addChildToList(ArrayList<DialogOption> dialogOptionslist,Map<String,TreeNode<String, Location>> locationMap){
         for(Map.Entry<String, TreeNode<String, Location>> entry : locationMap.entrySet()) {
 
-                    if(entry.getValue().getChildren() != null) {
-                        addChildToList(dialogOptionslist,entry.getValue().getChildren());
+            if(entry.getValue().getChildren() != null) {
+                addChildToList(dialogOptionslist,entry.getValue().getChildren());
 
-                    }else{
-                        StringUtil.humanize(entry.getValue().getLabel());
-                        String name = StringUtil.humanize(entry.getValue().getLabel());
-                        dialogOptionslist.add(new CommonObjectFilterOption(name.replace(" ","_"),"location_name", CommonObjectFilterOption.ByColumnAndByDetails.byDetails,name));
+            }else{
+                StringUtil.humanize(entry.getValue().getLabel());
+                String name = StringUtil.humanize(entry.getValue().getLabel());
+                dialogOptionslist.add(new CommonObjectFilterOption(name.replace(" ","_"),"location_name", CommonObjectFilterOption.ByColumnAndByDetails.byDetails,name));
 
-                    }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (currentPage != 0){
-            switchToSelectFormFragment(null);
-        }else if (currentPage == 0) {
-            super.onBackPressed(); // allow back key only if we are
+            }
         }
     }
 }
