@@ -17,27 +17,27 @@
         <activity
             android:name=".NativeHomeActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".household.HouseHoldSmartRegisterActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoActionBarAndTitle" />
         <activity
             android:name=".household.tutorial.tutorialCircleViewFlow"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoActionBarAndTitle" />
         <activity
             android:name=".household.HouseHoldDetailActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoActionBarAndTitle" />
         <activity
             android:name=".elco.ElcoSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoActionBarAndTitle" />
         <activity
             android:name=".elco.ElcoDetailActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoActionBarAndTitle" />
 
     </application>
 

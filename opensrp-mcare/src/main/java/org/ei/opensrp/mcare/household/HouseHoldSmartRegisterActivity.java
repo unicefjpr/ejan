@@ -82,9 +82,11 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
         // Instantiate a ViewPager and a PagerAdapter.
         mPagerAdapter = new HouseHoldActivityPagerAdapter(getSupportFragmentManager());
-        mPager.setOffscreenPageLimit(2); // prevent the offscreen fragments from being destroyed
+        mPager.setOffscreenPageLimit(3); // prevent the offscreen fragments from being destroyed
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -98,7 +100,7 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
     }
 
     public void onPageChanged(int page){
-        //setRequestedOrientation(page == 0 ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(page == 0 ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override
@@ -243,7 +245,7 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
 
     @Override
     public void startFormActivity(String formName, String entityId, String metaData) {
-        mPager.setCurrentItem(1, true);
+        mPager.setCurrentItem(1, false); //Don't animate the view on orientation change the view disapears
     }
 
     @Override
@@ -269,7 +271,7 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mPager.setCurrentItem(0, true);
+                mPager.setCurrentItem(0, false);
                 SecuredNativeSmartRegisterFragment registerFragment = (SecuredNativeSmartRegisterFragment) findFragmentByPosition(0);
                 if (registerFragment != null && data != null) {
                     registerFragment.refreshListView();

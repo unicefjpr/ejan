@@ -65,7 +65,7 @@
         <activity
             android:name=".view.activity.ReportsActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.VideosActivity"
             android:screenOrientation="landscape"
@@ -73,98 +73,98 @@
         <activity
             android:name=".view.activity.ReportIndicatorListViewActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.ReportIndicatorDetailActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.ReportIndicatorCaseListActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.EligibleCoupleDetailActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.ANCDetailActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.PNCDetailActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.ChildDetailActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.CameraLaunchActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.ECSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.FPSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.ANCSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.PNCSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.ChildSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.FormActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.MicroFormActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.NativeECSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
 
         <activity
             android:name=".view.activity.NativeChildSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
 
         <activity
             android:name=".view.activity.NativeFPSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
 
         <activity
             android:name=".view.activity.NativeANCSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
 
 
         <activity
             android:name=".view.activity.NativePNCSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoTitle" />
 
 
         <activity
             android:name=".view.activity.NativeHomeActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppThemeNoTitle"></activity>
         <activity
             android:name=".view.activity.SettingsActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppThemeNoTitle"></activity>
 
         <receiver android:name=".view.receiver.SyncBroadcastReceiver" />
         <receiver android:name=".view.receiver.ConnectivityChangeReceiver">
