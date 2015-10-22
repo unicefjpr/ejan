@@ -49,13 +49,13 @@ public class DisplayFormFragment extends Fragment {
         this.formName = formName;
     }
 
-    private Long recordId;
+    private String recordId;
 
-    public Long getRecordId() {
+    public String getRecordId() {
         return recordId;
     }
 
-    public void setRecordId(Long recordId) {
+    public void setRecordId(String recordId) {
         this.recordId = recordId;
     }
 
@@ -197,7 +197,7 @@ public class DisplayFormFragment extends Fragment {
 
         @JavascriptInterface
         public void processFormSubmission(String formSubmission){
-            ((SecuredNativeSmartRegisterActivity)getActivity()).saveFormSubmission(formSubmission, formName, getFormFieldsOverrides());
+            ((SecuredNativeSmartRegisterActivity)getActivity()).saveFormSubmission(formSubmission, recordId, formName, getFormFieldsOverrides());
         }
     }
 

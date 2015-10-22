@@ -89,7 +89,7 @@ public abstract class SecuredNativeSmartRegisterActivity extends SecuredActivity
         this.clientsAdapter = clientsAdapter;
     }
 
-    public void saveFormSubmission(String formSubmision,String formName, Map<String, String> fieldOverrides){
+    public void saveFormSubmission(String formSubmision, String id, String formName, Map<String, String> fieldOverrides){
 
     }
 

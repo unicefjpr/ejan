@@ -96,7 +96,8 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
             }
         });
 
-        onPageChanged(0);
+        FormUtils formUtils = FormUtils.getInstance(getApplicationContext());
+        String test123 = formUtils.generateXMLInputForFormWithEntityId("8c872228-09ee-4a38-9b01-a0f0bbcd7609", "new_household_registration", null);
     }
 
     public void onPageChanged(int page){
@@ -245,15 +246,24 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
 
     @Override
     public void startFormActivity(String formName, String entityId, String metaData) {
+        if (entityId != null){
+            String data = FormUtils.getInstance(getApplicationContext()).generateXMLInputForFormWithEntityId(entityId, formName, null);
+            DisplayFormFragment displayFormFragment = getDisplayFormFragment();
+            if (displayFormFragment != null) {
+                displayFormFragment.setFormData(data);
+                displayFormFragment.loadFormData();
+            }
+        }
+
         mPager.setCurrentItem(1, false); //Don't animate the view on orientation change the view disapears
     }
 
     @Override
-    public void saveFormSubmission(String formSubmission, String formName, Map<String, String> fieldOverrides){
+    public void saveFormSubmission(String formSubmission, String id, String formName, Map<String, String> fieldOverrides){
         // save the form
         try{
             FormUtils formUtils = FormUtils.getInstance(getApplicationContext());
-            FormSubmission submission = formUtils.generateFormSubmisionFromXMLString(formSubmission, formName, new HashMap<String, String>());
+            FormSubmission submission = formUtils.generateFormSubmisionFromXMLString(id, formSubmission, formName, new HashMap<String, String>());
 
             org.ei.opensrp.Context context = org.ei.opensrp.Context.getInstance();
             ZiggyService ziggyService = context.ziggyService();
