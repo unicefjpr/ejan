@@ -252,6 +252,7 @@ public class HouseHoldSmartRegisterActivity extends SecuredNativeSmartRegisterAc
             if (displayFormFragment != null) {
                 displayFormFragment.setFormData(data);
                 displayFormFragment.loadFormData();
+                displayFormFragment.setRecordId(entityId);
             }
         }
 

@@ -62,7 +62,6 @@ public class DisplayFormFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         View view = inflater.inflate(R.layout.display_form_fragment, container, false);
         webView = (WebView)view.findViewById(R.id.webview);
         progressBar = (ProgressBar)view.findViewById(R.id.progressBar);
