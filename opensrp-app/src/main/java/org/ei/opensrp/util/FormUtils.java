@@ -5,6 +5,8 @@ import android.util.Xml;
 
 import org.ei.opensrp.domain.SyncStatus;
 import org.ei.opensrp.domain.form.FormSubmission;
+import org.ei.opensrp.view.dialog.DialogOption;
+import org.ei.opensrp.view.dialog.OpenFormOption;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
@@ -489,5 +491,14 @@ public class FormUtils {
         return fileContents;
     }
 
+    public static int getIndexForFormName(String formName, DialogOption[] dialogOptions){
+        for (int i = 0; i < dialogOptions.length; i++){
+            String form = ((OpenFormOption)dialogOptions[i]).getFormName();
+            if (form.equalsIgnoreCase(formName)){
+                return i;
+            }
+        }
+        return -1;
+    }
 
 }

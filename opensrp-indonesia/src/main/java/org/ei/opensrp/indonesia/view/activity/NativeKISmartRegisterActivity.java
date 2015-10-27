@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import org.ei.opensrp.adapter.SmartRegisterPaginatedAdapter;
 import org.ei.opensrp.domain.form.FieldOverrides;
-import org.ei.opensrp.domain.form.FormSubmission;
 import org.ei.opensrp.indonesia.AllConstantsINA;
 import org.ei.opensrp.indonesia.Context;
 import org.ei.opensrp.indonesia.R;
@@ -26,7 +25,6 @@ import org.ei.opensrp.indonesia.view.dialog.NoIbuSort;
 import org.ei.opensrp.indonesia.view.dialog.ReverseNameSort;
 import org.ei.opensrp.indonesia.view.pageradapter.KISmartRegisterActivityPagerAdapter;
 import org.ei.opensrp.provider.SmartRegisterClientsProvider;
-import org.ei.opensrp.service.ZiggyService;
 import org.ei.opensrp.util.FormUtils;
 import org.ei.opensrp.view.contract.SmartRegisterClient;
 import org.ei.opensrp.view.dialog.AllClientsFilter;
@@ -43,7 +41,6 @@ import org.ei.opensrp.view.fragment.DisplayFormFragment;
 import org.ei.opensrp.view.fragment.SecuredNativeSmartRegisterFragment;
 import org.ei.opensrp.view.viewpager.SampleViewPager;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -83,8 +80,8 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mPagerAdapter = new KISmartRegisterActivityPagerAdapter(getSupportFragmentManager());
-        mPager.setOffscreenPageLimit(3); // prevent the offscreen fragments from being destroyed
+        mPagerAdapter = new KISmartRegisterActivityPagerAdapter(getSupportFragmentManager(), getEditOptions());
+        mPager.setOffscreenPageLimit(getEditOptions().length);
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -255,9 +252,10 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
 
     @Override
     public void startFormActivity(String formName, String entityId, String metaData) {
+        int formIndex = FormUtils.getIndexForFormName(formName, getEditOptions()) + 1; // add the offset
         if (entityId != null){
             String data = FormUtils.getInstance(getApplicationContext()).generateXMLInputForFormWithEntityId(entityId, formName, null);
-            DisplayFormFragment displayFormFragment = getDisplayFormFragment();
+            DisplayFormFragment displayFormFragment = getDisplayFormFragmentAtIndex(formIndex);
             if (displayFormFragment != null) {
                 displayFormFragment.setFormData(data);
                 displayFormFragment.loadFormData();
@@ -265,7 +263,7 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
             }
         }
 
-        mPager.setCurrentItem(1, false); //Don't animate the view on orientation change the view disapears
+        mPager.setCurrentItem(formIndex, false); //Don't animate the view on orientation change the view disapears
     }
 
     @Override
@@ -280,14 +278,15 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
 //            ziggyService.saveForm(getParams(submission), submission.instance());
 
             //switch to forms list fragment
-            switchToSelectFormFragment(formSubmission); // Unnecessary!! passing on data
+            switchToBaseFragment(formSubmission); // Unnecessary!! passing on data
 
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public void switchToSelectFormFragment(final String data){
+    public void switchToBaseFragment(final String data){
+        final int prevPageIndex = currentPage;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -298,7 +297,7 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
                 }
 
                 //hack reset the form
-                DisplayFormFragment displayFormFragment = getDisplayFormFragment();
+                DisplayFormFragment displayFormFragment = getDisplayFormFragmentAtIndex(prevPageIndex);
                 if (displayFormFragment != null) {
                     displayFormFragment.setFormData(null);
                     displayFormFragment.loadFormData();
@@ -315,14 +314,14 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
         return getSupportFragmentManager().findFragmentByTag("android:switcher:" + mPager.getId() + ":" + fragmentPagerAdapter.getItemId(position));
     }
 
-    public DisplayFormFragment getDisplayFormFragment() {
-        return  (DisplayFormFragment)findFragmentByPosition(1);
+    public DisplayFormFragment getDisplayFormFragmentAtIndex(int index) {
+        return  (DisplayFormFragment)findFragmentByPosition(index);
     }
 
     @Override
     public void onBackPressed() {
         if (currentPage != 0){
-            switchToSelectFormFragment(null);
+            switchToBaseFragment(null);
         }else if (currentPage == 0) {
             super.onBackPressed(); // allow back key only if we are
         }
