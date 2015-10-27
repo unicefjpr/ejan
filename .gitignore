@@ -17,3 +17,4 @@ project.properties
 .settings
 build/
 .gradle
+!opensrp-app/assets/web/build/

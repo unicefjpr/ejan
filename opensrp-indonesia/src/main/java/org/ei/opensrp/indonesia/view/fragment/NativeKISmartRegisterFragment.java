@@ -1,21 +1,17 @@
-package org.ei.opensrp.indonesia.view.activity;
+package org.ei.opensrp.indonesia.view.fragment;
 
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Toast;
 
 import org.ei.opensrp.adapter.SmartRegisterPaginatedAdapter;
 import org.ei.opensrp.domain.form.FieldOverrides;
-import org.ei.opensrp.domain.form.FormSubmission;
 import org.ei.opensrp.indonesia.AllConstantsINA;
 import org.ei.opensrp.indonesia.Context;
 import org.ei.opensrp.indonesia.R;
 import org.ei.opensrp.indonesia.lib.FlurryFacade;
 import org.ei.opensrp.indonesia.provider.KIClientsProvider;
 import org.ei.opensrp.indonesia.service.formSubmissionHandler.KIRegistrationHandler;
+import org.ei.opensrp.indonesia.view.activity.NativeKISmartRegisterActivity;
 import org.ei.opensrp.indonesia.view.contract.KartuIbuClient;
 import org.ei.opensrp.indonesia.view.controller.BidanVillageController;
 import org.ei.opensrp.indonesia.view.controller.KartuIbuRegisterController;
@@ -24,10 +20,8 @@ import org.ei.opensrp.indonesia.view.dialog.AllKartuIbuServiceMode;
 import org.ei.opensrp.indonesia.view.dialog.EstimatedDateOfDeliverySortKI;
 import org.ei.opensrp.indonesia.view.dialog.NoIbuSort;
 import org.ei.opensrp.indonesia.view.dialog.ReverseNameSort;
-import org.ei.opensrp.indonesia.view.pageradapter.KISmartRegisterActivityPagerAdapter;
 import org.ei.opensrp.provider.SmartRegisterClientsProvider;
-import org.ei.opensrp.service.ZiggyService;
-import org.ei.opensrp.util.FormUtils;
+import org.ei.opensrp.view.activity.SecuredNativeSmartRegisterActivity;
 import org.ei.opensrp.view.contract.SmartRegisterClient;
 import org.ei.opensrp.view.dialog.AllClientsFilter;
 import org.ei.opensrp.view.dialog.DialogOption;
@@ -39,15 +33,6 @@ import org.ei.opensrp.view.dialog.NameSort;
 import org.ei.opensrp.view.dialog.OpenFormOption;
 import org.ei.opensrp.view.dialog.ServiceModeOption;
 import org.ei.opensrp.view.dialog.SortOption;
-import org.ei.opensrp.view.fragment.DisplayFormFragment;
-import org.ei.opensrp.view.fragment.SecuredNativeSmartRegisterFragment;
-import org.ei.opensrp.view.viewpager.SampleViewPager;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Iterables.toArray;
@@ -59,9 +44,9 @@ import static org.ei.opensrp.indonesia.AllConstantsINA.FormNames.KARTU_IBU_REGIS
 import static org.ei.opensrp.indonesia.AllConstantsINA.FormNames.KOHORT_KB_PELAYANAN;
 
 /**
- * Created by Dimas Ciputra on 2/18/15.
+ * Created by koros on 10/23/15.
  */
-public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegisterActivity {
+public class NativeKISmartRegisterFragment extends BidanSecuredNativeSmartRegisterFragment{
 
     private SmartRegisterClientsProvider clientProvider = null;
     private KartuIbuRegisterController controller;
@@ -70,33 +55,8 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
 
     private final ClientActionHandler clientActionHandler = new ClientActionHandler();
 
-    @Bind(R.id.view_pager) SampleViewPager mPager;
-    private FragmentPagerAdapter mPagerAdapter;
-    private int currentPage;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPagerAdapter = new KISmartRegisterActivityPagerAdapter(getSupportFragmentManager());
-        mPager.setOffscreenPageLimit(3); // prevent the offscreen fragments from being destroyed
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                currentPage = position;
-                onPageChanged(position);
-            }
-        });
-    }
-
-    public void onPageChanged(int page){
-        setRequestedOrientation(page == 0 ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    protected void onCreation() {
     }
 
     @Override
@@ -116,8 +76,8 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
     }
 
     @Override
-    protected DefaultOptionsProvider getDefaultOptionsProvider() {
-        return new DefaultOptionsProvider() {
+    protected SecuredNativeSmartRegisterActivity.DefaultOptionsProvider getDefaultOptionsProvider() {
+        return new SecuredNativeSmartRegisterActivity.DefaultOptionsProvider() {
 
             @Override
             public ServiceModeOption serviceMode() {
@@ -142,14 +102,14 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
     }
 
     @Override
-    public void setupViews() {
-        super.setupViews();
+    protected void setupViews(View view) {
+        super.setupViews(view);
     }
 
     @Override
-    protected NavBarOptionsProvider getNavBarOptionsProvider() {
+    protected SecuredNativeSmartRegisterActivity.NavBarOptionsProvider getNavBarOptionsProvider() {
 
-        return new NavBarOptionsProvider() {
+        return new SecuredNativeSmartRegisterActivity.NavBarOptionsProvider() {
 
             @Override
             public DialogOption[] filterOptions() {
@@ -181,7 +141,7 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
     protected SmartRegisterClientsProvider clientsProvider() {
         if (clientProvider == null) {
             clientProvider = new KIClientsProvider(
-                    this, clientActionHandler, controller);
+                    getActivity(), clientActionHandler, controller);
         }
         return clientProvider;
     }
@@ -201,15 +161,15 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
     protected void startRegistration() {
         String uniqueIdJson = ((Context)context).uniqueIdController().getUniqueIdJson();
         if(uniqueIdJson == null || uniqueIdJson.isEmpty()) {
-            Toast.makeText(this, "No Unique Id", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "No Unique Id", Toast.LENGTH_SHORT).show();
             return;
         }
         FieldOverrides fieldOverrides = new FieldOverrides(uniqueIdJson);
-        startFormActivity(KARTU_IBU_REGISTRATION, null, fieldOverrides.getJSONString());
+        ((NativeKISmartRegisterActivity)getActivity()).startFormActivity(KARTU_IBU_REGISTRATION, null, fieldOverrides.getJSONString());
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         FlurryFacade.logEvent("kohort_ibu_dashboard");
     }
@@ -245,7 +205,7 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
 
             if(option.name().equalsIgnoreCase(getString(R.string.str_register_anc_form)) ) {
                 if(controller.isMotherInANCorPNC(client.entityId())) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.mother_already_registered), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.mother_already_registered), Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -253,78 +213,4 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
         }
     }
 
-    @Override
-    public void startFormActivity(String formName, String entityId, String metaData) {
-        if (entityId != null){
-            String data = FormUtils.getInstance(getApplicationContext()).generateXMLInputForFormWithEntityId(entityId, formName, null);
-            DisplayFormFragment displayFormFragment = getDisplayFormFragment();
-            if (displayFormFragment != null) {
-                displayFormFragment.setFormData(data);
-                displayFormFragment.loadFormData();
-                displayFormFragment.setRecordId(entityId);
-            }
-        }
-
-        mPager.setCurrentItem(1, false); //Don't animate the view on orientation change the view disapears
-    }
-
-    @Override
-    public void saveFormSubmission(String formSubmission, String id, String formName, Map<String, String> fieldOverrides){
-        // save the form
-        try{
-//            FormUtils formUtils = FormUtils.getInstance(getApplicationContext());
-//            FormSubmission submission = formUtils.generateFormSubmisionFromXMLString(id, formSubmission, formName, new HashMap<String, String>());
-//
-//            org.ei.opensrp.Context context = org.ei.opensrp.Context.getInstance();
-//            ZiggyService ziggyService = context.ziggyService();
-//            ziggyService.saveForm(getParams(submission), submission.instance());
-
-            //switch to forms list fragment
-            switchToSelectFormFragment(formSubmission); // Unnecessary!! passing on data
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public void switchToSelectFormFragment(final String data){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mPager.setCurrentItem(0, false);
-                SecuredNativeSmartRegisterFragment registerFragment = (SecuredNativeSmartRegisterFragment) findFragmentByPosition(0);
-                if (registerFragment != null && data != null) {
-                    registerFragment.refreshListView();
-                }
-
-                //hack reset the form
-                DisplayFormFragment displayFormFragment = getDisplayFormFragment();
-                if (displayFormFragment != null) {
-                    displayFormFragment.setFormData(null);
-                    displayFormFragment.loadFormData();
-                }
-
-                displayFormFragment.setRecordId(null);
-            }
-        });
-
-    }
-
-    public android.support.v4.app.Fragment findFragmentByPosition(int position) {
-        FragmentPagerAdapter fragmentPagerAdapter = mPagerAdapter;
-        return getSupportFragmentManager().findFragmentByTag("android:switcher:" + mPager.getId() + ":" + fragmentPagerAdapter.getItemId(position));
-    }
-
-    public DisplayFormFragment getDisplayFormFragment() {
-        return  (DisplayFormFragment)findFragmentByPosition(1);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (currentPage != 0){
-            switchToSelectFormFragment(null);
-        }else if (currentPage == 0) {
-            super.onBackPressed(); // allow back key only if we are
-        }
-    }
 }
