@@ -17,9 +17,9 @@ import static org.ei.opensrp.indonesia.AllConstantsINA.FormNames.KARTU_IBU_REGIS
  */
 public class KISmartRegisterActivityPagerAdapter extends FragmentPagerAdapter {
     public static final String ARG_PAGE = "page";
-    DialogOption[] dialogOptions;
+    String[] dialogOptions;
 
-    public KISmartRegisterActivityPagerAdapter(FragmentManager fragmentManager, DialogOption[] dialogOptions) {
+    public KISmartRegisterActivityPagerAdapter(FragmentManager fragmentManager, String[] dialogOptions) {
         super(fragmentManager);
         this.dialogOptions = dialogOptions;
     }
@@ -33,7 +33,7 @@ public class KISmartRegisterActivityPagerAdapter extends FragmentPagerAdapter {
                 break;
 
             default:
-                String formName = ((OpenFormOption)dialogOptions[position - 1]).getFormName();
+                String formName = dialogOptions[position - 1]; // account for the base fragment
                 DisplayFormFragment f = new DisplayFormFragment();
                 f.setFormName(formName);
                 fragment = f;
@@ -48,6 +48,6 @@ public class KISmartRegisterActivityPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return dialogOptions.length + 1;
+        return dialogOptions.length + 1; // index 0 is always occupied by the base fragment
     }
 }

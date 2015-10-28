@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import org.ei.opensrp.adapter.SmartRegisterPaginatedAdapter;
 import org.ei.opensrp.domain.form.FieldOverrides;
+import org.ei.opensrp.domain.form.FormSubmission;
 import org.ei.opensrp.indonesia.AllConstantsINA;
 import org.ei.opensrp.indonesia.Context;
 import org.ei.opensrp.indonesia.R;
@@ -25,6 +26,7 @@ import org.ei.opensrp.indonesia.view.dialog.NoIbuSort;
 import org.ei.opensrp.indonesia.view.dialog.ReverseNameSort;
 import org.ei.opensrp.indonesia.view.pageradapter.KISmartRegisterActivityPagerAdapter;
 import org.ei.opensrp.provider.SmartRegisterClientsProvider;
+import org.ei.opensrp.service.ZiggyService;
 import org.ei.opensrp.util.FormUtils;
 import org.ei.opensrp.view.contract.SmartRegisterClient;
 import org.ei.opensrp.view.dialog.AllClientsFilter;
@@ -40,7 +42,12 @@ import org.ei.opensrp.view.dialog.SortOption;
 import org.ei.opensrp.view.fragment.DisplayFormFragment;
 import org.ei.opensrp.view.fragment.SecuredNativeSmartRegisterFragment;
 import org.ei.opensrp.view.viewpager.SampleViewPager;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -71,6 +78,8 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
     private FragmentPagerAdapter mPagerAdapter;
     private int currentPage;
 
+    private String[] formNames = new String[]{};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +88,10 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
+        formNames = this.buildFormNameList();
+
         // Instantiate a ViewPager and a PagerAdapter.
-        mPagerAdapter = new KISmartRegisterActivityPagerAdapter(getSupportFragmentManager(), getEditOptions());
+        mPagerAdapter = new KISmartRegisterActivityPagerAdapter(getSupportFragmentManager(), formNames);
         mPager.setOffscreenPageLimit(getEditOptions().length);
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -252,18 +263,35 @@ public class NativeKISmartRegisterActivity extends BidanSecuredNativeSmartRegist
 
     @Override
     public void startFormActivity(String formName, String entityId, String metaData) {
-        int formIndex = FormUtils.getIndexForFormName(formName, getEditOptions()) + 1; // add the offset
-        if (entityId != null){
-            String data = FormUtils.getInstance(getApplicationContext()).generateXMLInputForFormWithEntityId(entityId, formName, null);
-            DisplayFormFragment displayFormFragment = getDisplayFormFragmentAtIndex(formIndex);
-            if (displayFormFragment != null) {
-                displayFormFragment.setFormData(data);
-                displayFormFragment.loadFormData();
-                displayFormFragment.setRecordId(entityId);
+        try {
+            int formIndex = FormUtils.getIndexForFormName(formName, formNames) + 1; // add the offset
+            if (entityId != null || metaData != null){
+                String data = FormUtils.getInstance(getApplicationContext()).generateXMLInputForFormWithEntityId(entityId, formName, metaData);
+                DisplayFormFragment displayFormFragment = getDisplayFormFragmentAtIndex(formIndex);
+                if (displayFormFragment != null) {
+                    displayFormFragment.setFormData(data);
+                    displayFormFragment.loadFormData();
+                    displayFormFragment.setRecordId(entityId);
+                }
             }
+
+            mPager.setCurrentItem(formIndex, false); //Don't animate the view on orientation change the view disapears
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
-        mPager.setCurrentItem(formIndex, false); //Don't animate the view on orientation change the view disapears
+    }
+
+    private String[] buildFormNameList(){
+        List<String> formNames = new ArrayList<String>();
+        formNames.add(KARTU_IBU_REGISTRATION);
+
+        DialogOption[] options = getEditOptions();
+        for (int i = 0; i < options.length; i++){
+            formNames.add(((OpenFormOption) options[i]).getFormName());
+        }
+        return formNames.toArray(new String[formNames.size()]);
     }
 
     @Override
