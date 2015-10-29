@@ -15,13 +15,15 @@ import static org.ei.opensrp.indonesia.AllConstantsINA.FormNames.KARTU_IBU_REGIS
 /**
  * Created by koros on 10/23/15.
  */
-public class KISmartRegisterActivityPagerAdapter extends FragmentPagerAdapter {
+public class BaseRegisterActivityPagerAdapter extends FragmentPagerAdapter {
     public static final String ARG_PAGE = "page";
     String[] dialogOptions;
+    Fragment mBaseFragment;
 
-    public KISmartRegisterActivityPagerAdapter(FragmentManager fragmentManager, String[] dialogOptions) {
+    public BaseRegisterActivityPagerAdapter(FragmentManager fragmentManager, String[] dialogOptions, Fragment baseFragment) {
         super(fragmentManager);
         this.dialogOptions = dialogOptions;
+        this.mBaseFragment = baseFragment;
     }
 
     @Override
@@ -29,7 +31,7 @@ public class KISmartRegisterActivityPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new NativeKISmartRegisterFragment();
+                fragment = mBaseFragment;
                 break;
 
             default:

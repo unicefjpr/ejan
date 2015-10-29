@@ -73,6 +73,7 @@
         </activity>
         <activity android:name=".view.activity.BidanHomeActivity"
             android:theme="@style/AppThemeNoTitle"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="landscape">
         </activity>
         <activity android:name=".view.activity.NativeKISmartRegisterActivity"
@@ -82,32 +83,38 @@
             >
         </activity>
         <activity android:name=".view.activity.NativeKIANCSmartRegisterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoActionBarAndTitle"
             android:screenOrientation="landscape"
             >
         </activity>
         <activity android:name=".view.activity.NativeKIAnakSmartRegisterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoActionBarAndTitle"
             android:screenOrientation="landscape"
             >
         </activity>
         <activity android:name=".view.activity.NativeKBSmartRegisterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoActionBarAndTitle"
             android:screenOrientation="landscape"
             >
         </activity>
         <activity android:name=".view.activity.NativeKIPNCSmartRegisterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoActionBarAndTitle"
             android:screenOrientation="landscape"
             >
         </activity>
         <activity android:name=".view.activity.MotherProfileViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoActionBarAndTitle"
             android:screenOrientation="landscape"
             >
         </activity>
         <activity android:name=".view.activity.ChildProfileViewActivity"
             android:theme="@style/AppThemeNoActionBarAndTitle"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="landscape"
             >
         </activity>
@@ -118,10 +125,12 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="org.ei.opensrp.view.activity.MicroFormActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoActionBarAndTitle"
             android:screenOrientation="landscape"/>
 
         <activity android:name="org.ei.opensrp.view.activity.NativeHomeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoTitle"
             android:screenOrientation="landscape">
         </activity>

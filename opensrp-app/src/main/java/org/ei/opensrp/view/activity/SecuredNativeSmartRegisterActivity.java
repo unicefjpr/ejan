@@ -312,12 +312,14 @@ public abstract class SecuredNativeSmartRegisterActivity extends SecuredActivity
 
     private void setupAdapter() {
         clientsAdapter = adapter();
-        clientsAdapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                paginationViewHandler.refresh();
-            }
-        });
+        if (clientsAdapter != null){
+            clientsAdapter.registerDataSetObserver(new DataSetObserver() {
+                @Override
+                public void onChanged() {
+                    paginationViewHandler.refresh();
+                }
+            });
+        }
     }
 
     protected SmartRegisterPaginatedAdapter adapter() {
