@@ -1,5 +1,7 @@
 package org.ei.opensrp.mcare.fragment;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,6 +36,7 @@ import org.ei.opensrp.view.dialog.DialogOptionMapper;
 import org.ei.opensrp.view.dialog.DialogOptionModel;
 import org.ei.opensrp.view.dialog.EditOption;
 import org.ei.opensrp.view.dialog.FilterOption;
+import org.ei.opensrp.view.dialog.LocationSelectorDialogFragment;
 import org.ei.opensrp.view.dialog.OpenFormOption;
 import org.ei.opensrp.view.dialog.ServiceModeOption;
 import org.ei.opensrp.view.dialog.SortOption;
@@ -197,8 +200,16 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
     }
 
     @Override
-    protected void startRegistration() {
-        ((HouseHoldSmartRegisterActivity)getActivity()).startRegistration();
+    public void startRegistration() {
+        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+        Fragment prev = getActivity().getFragmentManager().findFragmentByTag(locationDialogTAG);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        LocationSelectorDialogFragment
+                .newInstance((HouseHoldSmartRegisterActivity)getActivity(), new EditDialogOptionModel(), context.anmLocationController().get(), "new_household_registration")
+                .show(ft, locationDialogTAG);
     }
 
     private class ClientActionHandler implements View.OnClickListener {

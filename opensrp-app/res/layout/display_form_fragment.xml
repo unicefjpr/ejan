@@ -6,6 +6,7 @@
     <WebView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:windowSoftInputMode="adjustResize"
         android:id="@+id/webview">
     </WebView>
 

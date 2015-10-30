@@ -90,7 +90,6 @@ public abstract class SecuredNativeSmartRegisterActivity extends SecuredActivity
     }
 
     public void saveFormSubmission(String formSubmision, String id, String formName, Map<String, String> fieldOverrides){
-
     }
 
     private SmartRegisterPaginatedAdapter clientsAdapter;
