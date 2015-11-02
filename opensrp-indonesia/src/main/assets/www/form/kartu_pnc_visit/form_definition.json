@@ -115,6 +115,30 @@
         "bind": "/model/instance/PNC_Visit/Keadaan_pulang"
       },
       {
+        "name": "highRiskPostPartumDistosia",
+        "bind": "/model/instance/PNC_Visit/high_risk_postPartum_distosia"
+      },
+      {
+        "name": "highRiskPostPartumPIH",
+        "bind": "/model/instance/PNC_Visit/high_risk_postPartum_PIH"
+      },
+      {
+        "name": "highRiskPostPartumHemorrhage",
+        "bind": "/model/instance/PNC_Visit/high_risk_postPartum_Hemorrhage"
+      },
+      {
+        "name": "highRiskPostPartumInfection",
+        "bind": "/model/instance/PNC_Visit/high_risk_postPartum_infection"
+      },
+      {
+        "name": "highRiskPostPartumMaternalSepsis",
+        "bind": "/model/instance/PNC_Visit/high_risk_postPartum_maternal_sepsis"
+      },
+      {
+        "name": "highRiskPostPartumMastitis",
+        "bind": "/model/instance/PNC_Visit/high_risk_postPartum_Mastitis"
+      },
+      {
         "name": "submissionDate",
         "bind": "/model/instance/PNC_Visit/today"
       },
