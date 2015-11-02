@@ -5,6 +5,8 @@ import android.util.Xml;
 
 import org.ei.opensrp.domain.SyncStatus;
 import org.ei.opensrp.domain.form.FormSubmission;
+import org.ei.opensrp.view.dialog.DialogOption;
+import org.ei.opensrp.view.dialog.OpenFormOption;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
@@ -135,9 +137,17 @@ public class FormUtils {
         return ids;
     }
 
-    public String generateXMLInputForFormWithEntityId(String entityId, String formName, Map<String, String> overrides){
+    public String generateXMLInputForFormWithEntityId(String entityId, String formName, String overrides){
         try
         {
+            //get the field overrides map
+            JSONObject fieldOverrides = new JSONObject();
+            if (overrides != null){
+                fieldOverrides = new JSONObject(overrides);
+                String overridesStr = fieldOverrides.getString("fieldOverrides");
+                fieldOverrides = new JSONObject(overridesStr);
+            }
+
             // use the form_definition.json to get the form mappings
             String formDefinitionJson = readFileFromAssetsFolder("www/form/" + formName + "/form_definition.json");
             JSONObject formDefinition = new JSONObject(formDefinitionJson);
@@ -173,7 +183,7 @@ public class FormUtils {
                 Node n = entries.item(i);
                 if (n instanceof Element){
                     Element node = (Element)n;
-                    writeXML(node, serializer, bindPath, formDefinition, entityJson);
+                    writeXML(node, serializer, fieldOverrides, formDefinition, entityJson);
                 }
             }
 
@@ -194,7 +204,7 @@ public class FormUtils {
         return "";
     }
 
-    private void writeXML(Element node, XmlSerializer serializer, String bindPath, JSONObject formDefinition, JSONObject entityJson){
+    private void writeXML(Element node, XmlSerializer serializer, JSONObject fieldOverrides, JSONObject formDefinition, JSONObject entityJson){
         try {
             String nodeName = node.getNodeName();
             String entityId = entityJson.has("id") ? entityJson.getString("id") : null;
@@ -205,6 +215,12 @@ public class FormUtils {
             if (entityJson.has(nodeName)){
                 serializer.text(entityJson.getString(nodeName));
             }
+
+            //overwrite the node value with contents from overrides map
+            if (fieldOverrides.has(nodeName)){
+                serializer.text(fieldOverrides.getString(nodeName));
+            }
+
             // write the xml attributes
             writeXMLAttributes(node, serializer);
 
@@ -231,7 +247,7 @@ public class FormUtils {
                             JSONArray childTables = new JSONArray(childTablesStr);
                             for (int k = 0; k < childTables.length(); k++){
                                 JSONObject childEntityJson = childTables.getJSONObject(k);
-                                writeXML(child, serializer, "", subFormDefinition, childEntityJson);
+                                writeXML(child, serializer, fieldOverrides, subFormDefinition, childEntityJson);
                             }
                         }
                     }
@@ -245,6 +261,12 @@ public class FormUtils {
                         if (entityJson.has(fieldName)){
                             serializer.text(entityJson.getString(fieldName));
                         }
+
+                        //overwrite the node value with contents from overrides map
+                        if (fieldOverrides.has(fieldName)){
+                            serializer.text(fieldOverrides.getString(fieldName));
+                        }
+
                         serializer.endTag("", fieldName);
                     }
                 }
@@ -489,5 +511,13 @@ public class FormUtils {
         return fileContents;
     }
 
+    public static int getIndexForFormName(String formName, String[] formNames){
+        for (int i = 0; i < formNames.length; i++){
+            if (formName.equalsIgnoreCase(formNames[i])){
+                return i;
+            }
+        }
+        return -1;
+    }
 
 }

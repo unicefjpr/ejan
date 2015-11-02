@@ -1,28 +1,25 @@
 package org.ei.opensrp.mcare.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ImageButton;
 
 import org.ei.opensrp.Context;
 import org.ei.opensrp.adapter.SmartRegisterPaginatedAdapter;
-import org.ei.opensrp.commonregistry.CommonObjectFilterOption;
 import org.ei.opensrp.commonregistry.CommonObjectSort;
 import org.ei.opensrp.commonregistry.CommonPersonObjectClient;
 import org.ei.opensrp.commonregistry.CommonPersonObjectController;
 import org.ei.opensrp.mcare.R;
-import org.ei.opensrp.mcare.household.CensusEnrollmentHandler;
-import org.ei.opensrp.mcare.household.HHMWRAEXISTFilterOption;
-import org.ei.opensrp.mcare.household.HHSearchOption;
-import org.ei.opensrp.mcare.household.HouseHoldDetailActivity;
-import org.ei.opensrp.mcare.household.HouseHoldServiceModeOption;
-import org.ei.opensrp.mcare.household.HouseHoldSmartClientsProvider;
-import org.ei.opensrp.mcare.household.HouseHoldSmartRegisterActivity;
-import org.ei.opensrp.mcare.household.HouseholdCensusDueDateSort;
-import org.ei.opensrp.mcare.household.NOHHMWRAEXISTFilterOption;
+import org.ei.opensrp.mcare.elco.ElcoDetailActivity;
+import org.ei.opensrp.mcare.elco.ElcoMauzaCommonObjectFilterOption;
+import org.ei.opensrp.mcare.elco.ElcoPSRFDueDateSort;
+import org.ei.opensrp.mcare.elco.ElcoSearchOption;
+import org.ei.opensrp.mcare.elco.ElcoServiceModeOption;
+import org.ei.opensrp.mcare.elco.ElcoSmartClientsProvider;
+import org.ei.opensrp.mcare.elco.ElcoSmartRegisterActivity;
+import org.ei.opensrp.mcare.elco.PSRFHandler;
 import org.ei.opensrp.provider.SmartRegisterClientsProvider;
 import org.ei.opensrp.util.StringUtil;
 import org.ei.opensrp.view.activity.SecuredNativeSmartRegisterActivity;
@@ -36,7 +33,6 @@ import org.ei.opensrp.view.dialog.DialogOptionMapper;
 import org.ei.opensrp.view.dialog.DialogOptionModel;
 import org.ei.opensrp.view.dialog.EditOption;
 import org.ei.opensrp.view.dialog.FilterOption;
-import org.ei.opensrp.view.dialog.LocationSelectorDialogFragment;
 import org.ei.opensrp.view.dialog.OpenFormOption;
 import org.ei.opensrp.view.dialog.ServiceModeOption;
 import org.ei.opensrp.view.dialog.SortOption;
@@ -47,7 +43,6 @@ import org.opensrp.api.util.LocationTree;
 import org.opensrp.api.util.TreeNode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import util.AsyncTask;
@@ -57,9 +52,9 @@ import static android.view.View.VISIBLE;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
- * Created by koros on 10/12/15.
+ * Created by koros on 11/2/15.
  */
-public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFragment {
+public class ElcoSmartRegisterFragment extends SecuredNativeSmartRegisterFragment {
 
     private SmartRegisterClientsProvider clientProvider = null;
     private CommonPersonObjectController controller;
@@ -67,12 +62,6 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
     private DialogOptionMapper dialogOptionMapper;
 
     private final ClientActionHandler clientActionHandler = new ClientActionHandler();
-    private String locationDialogTAG = "locationDialogTAG";
-
-    @Override
-    protected void onCreation() {
-        //
-    }
 
     @Override
     protected SmartRegisterPaginatedAdapter adapter() {
@@ -85,7 +74,7 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
 
             @Override
             public ServiceModeOption serviceMode() {
-                return new HouseHoldServiceModeOption(clientsProvider());
+                return new ElcoServiceModeOption(clientsProvider());
             }
 
             @Override
@@ -95,13 +84,13 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
 
             @Override
             public SortOption sortOption() {
-                return new HouseholdCensusDueDateSort();
+                return new ElcoPSRFDueDateSort();
 
             }
 
             @Override
             public String nameInShortFormForTitle() {
-                return Context.getInstance().getStringResource(R.string.hh_register_title_in_short);
+                return getResources().getString(org.ei.opensrp.R.string.ec_register_title_in_short);
             }
         };
     }
@@ -112,13 +101,8 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
 
             @Override
             public DialogOption[] filterOptions() {
-
                 ArrayList<DialogOption> dialogOptionslist = new ArrayList<DialogOption>();
-
                 dialogOptionslist.add(new AllClientsFilter());
-                dialogOptionslist.add( new NOHHMWRAEXISTFilterOption("0","MWRA", NOHHMWRAEXISTFilterOption.ByColumnAndByDetails.byDetails));
-                dialogOptionslist.add(new HHMWRAEXISTFilterOption("0","MWRA", HHMWRAEXISTFilterOption.ByColumnAndByDetails.byDetails));
-
                 String locationjson = context.anmLocationController().get();
                 LocationTree locationTree = EntityUtils.fromJson(locationjson, LocationTree.class);
 
@@ -141,20 +125,18 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
             @Override
             public DialogOption[] sortingOptions() {
                 return new DialogOption[]{
-//                        new HouseholdCensusDueDateSort(),
+                        new ElcoPSRFDueDateSort(),
+                        new CommonObjectSort(CommonObjectSort.ByColumnAndByDetails.byDetails,false,"FWWOMFNAME", Context.getInstance().applicationContext().getString(R.string.elco_alphabetical_sort)),
+                        new CommonObjectSort(CommonObjectSort.ByColumnAndByDetails.byDetails,true,"GOBHHID", Context.getInstance().applicationContext().getString(R.string.hh_fwGobhhid_sort)),
+                        new CommonObjectSort(CommonObjectSort.ByColumnAndByDetails.byDetails,true,"JiVitAHHID", Context.getInstance().applicationContext().getString(R.string.hh_fwJivhhid_sort))
 
-                        new HouseholdCensusDueDateSort(),
-                        new CommonObjectSort(CommonObjectSort.ByColumnAndByDetails.byDetails,false,"FWHOHFNAME",getResources().getString(R.string.hh_alphabetical_sort)),
-                        new CommonObjectSort(CommonObjectSort.ByColumnAndByDetails.byDetails,true,"FWGOBHHID",getResources().getString(R.string.hh_fwGobhhid_sort)),
-                        new CommonObjectSort(CommonObjectSort.ByColumnAndByDetails.byDetails,true,"FWJIVHHID",getResources().getString(R.string.hh_fwJivhhid_sort))
-//""
 //                        new CommonObjectSort(true,false,true,"age")
                 };
             }
 
             @Override
             public String searchHint() {
-                return getResources().getString(R.string.hh_search_hint);
+                return getString(org.ei.opensrp.R.string.str_ec_search_hint);
             }
         };
     }
@@ -162,48 +144,43 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
     @Override
     protected SmartRegisterClientsProvider clientsProvider() {
         if (clientProvider == null) {
-            clientProvider = new HouseHoldSmartClientsProvider(
-                    getActivity(),clientActionHandler , controller,context.alertService());
+            clientProvider = new ElcoSmartClientsProvider(
+                    getActivity(),clientActionHandler , controller);
         }
         return clientProvider;
     }
 
-    private DialogOption[] getEditOptions() {
-        return ((HouseHoldSmartRegisterActivity)getActivity()).getEditOptions();
-    }
-
     @Override
     protected void onInitialization() {
-        controller = new CommonPersonObjectController(context.allCommonsRepositoryobjects("household"),
+        controller = new CommonPersonObjectController(context.allCommonsRepositoryobjects("elco"),
                 context.allBeneficiaries(), context.listCache(),
-                context.personObjectClientsCache(),"FWHOHFNAME","household","FWGOBHHID", CommonPersonObjectController.ByColumnAndByDetails.byDetails,new HouseholdCensusDueDateSort());
+                context.personObjectClientsCache(),"FWWOMFNAME","elco","FWELIGIBLE","1", CommonPersonObjectController.ByColumnAndByDetails.byDetails.byDetails,"FWWOMFNAME", CommonPersonObjectController.ByColumnAndByDetails.byDetails,new ElcoPSRFDueDateSort());
         villageController = new VillageController(context.allEligibleCouples(),
                 context.listCache(), context.villagesCache());
         dialogOptionMapper = new DialogOptionMapper();
-        context.formSubmissionRouter().getHandlerMap().put("census_enrollment_form",new CensusEnrollmentHandler());
+        context.formSubmissionRouter().getHandlerMap().put("psrf_form",new PSRFHandler());
+    }
+
+    @Override
+    protected void startRegistration() {
+        ((ElcoSmartRegisterActivity)getActivity()).startRegistration();
+    }
+
+    @Override
+    protected void onCreation() {
     }
 
     @Override
     public void setupViews(View view) {
-        getDefaultOptionsProvider();
-
         super.setupViews(view);
-
+        ImageButton startregister = (ImageButton)view.findViewById(org.ei.opensrp.R.id.register_client);
+        startregister.setVisibility(View.GONE);
         setServiceModeViewDrawableRight(null);
         updateSearchView();
     }
 
-    @Override
-    public void startRegistration() {
-        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-        Fragment prev = getActivity().getFragmentManager().findFragmentByTag(locationDialogTAG);
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
-        LocationSelectorDialogFragment
-                .newInstance((HouseHoldSmartRegisterActivity)getActivity(), new EditDialogOptionModel(), context.anmLocationController().get(), "new_household_registration")
-                .show(ft, locationDialogTAG);
+    private DialogOption[] getEditOptions() {
+        return ((ElcoSmartRegisterActivity)getActivity()).getEditOptions();
     }
 
     private class ClientActionHandler implements View.OnClickListener {
@@ -211,12 +188,11 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.profile_info_layout:
-                    HouseHoldDetailActivity.householdclient = (CommonPersonObjectClient)view.getTag();
-                    Intent intent = new Intent(getActivity(),HouseHoldDetailActivity.class);
+                    ElcoDetailActivity.Elcoclient = (CommonPersonObjectClient)view.getTag();
+                    Intent intent = new Intent(getActivity(), ElcoDetailActivity.class);
                     startActivity(intent);
-                    getActivity().finish();
                     break;
-                case R.id.hh_due_date:
+                case R.id.psrf_due_date:
                     showFragmentDialog(new EditDialogOptionModel(), view.getTag());
                     break;
             }
@@ -238,14 +214,6 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
             onEditSelection((EditOption) option, (SmartRegisterClient) tag);
         }
     }
-
-    @Override
-    protected void onResumption() {
-        super.onResumption();
-        getDefaultOptionsProvider();
-        updateSearchView();
-    }
-
     public void updateSearchView(){
         getSearchView().addTextChangedListener(new TextWatcher() {
             @Override
@@ -259,8 +227,7 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
 
                     @Override
                     protected Object doInBackground(Object[] params) {
-//                        currentSearchFilter =
-                        setCurrentSearchFilter(new HHSearchOption(cs.toString()));
+                        setCurrentSearchFilter(new ElcoSearchOption(cs.toString()));
                         filteredClients = getClientsAdapter().getListItemProvider()
                                 .updateClients(getCurrentVillageFilter(), getCurrentServiceModeOption(),
                                         getCurrentSearchFilter(), getCurrentSortOption());
@@ -305,9 +272,10 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
             }else{
                 StringUtil.humanize(entry.getValue().getLabel());
                 String name = StringUtil.humanize(entry.getValue().getLabel());
-                dialogOptionslist.add(new CommonObjectFilterOption(name.replace(" ","_"),"location_name", CommonObjectFilterOption.ByColumnAndByDetails.byDetails,name));
+                dialogOptionslist.add(new ElcoMauzaCommonObjectFilterOption(name.replace(" ","_"),"location_name", ElcoMauzaCommonObjectFilterOption.ByColumnAndByDetails.byDetails,name));
 
             }
         }
     }
+
 }

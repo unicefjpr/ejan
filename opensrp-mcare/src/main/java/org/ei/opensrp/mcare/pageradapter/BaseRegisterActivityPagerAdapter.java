@@ -5,17 +5,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import org.ei.opensrp.mcare.fragment.HouseHoldSmartRegisterFragment;
 import org.ei.opensrp.view.fragment.DisplayFormFragment;
 
 /**
- * Created by koros on 10/12/15.
+ * Created by koros on 11/2/15.
  */
-public class HouseHoldActivityPagerAdapter extends FragmentPagerAdapter{
+public class BaseRegisterActivityPagerAdapter extends FragmentPagerAdapter {
     public static final String ARG_PAGE = "page";
+    String[] dialogOptions;
+    Fragment mBaseFragment;
 
-    public HouseHoldActivityPagerAdapter(FragmentManager fragmentManager) {
+    public BaseRegisterActivityPagerAdapter(FragmentManager fragmentManager, String[] dialogOptions, Fragment baseFragment) {
         super(fragmentManager);
+        this.dialogOptions = dialogOptions;
+        this.mBaseFragment = baseFragment;
     }
 
     @Override
@@ -23,14 +26,14 @@ public class HouseHoldActivityPagerAdapter extends FragmentPagerAdapter{
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new HouseHoldSmartRegisterFragment();
+                fragment = mBaseFragment;
                 break;
-            case 1:
-                DisplayFormFragment f = new DisplayFormFragment();
-                f.setFormName("new_household_registration");
-                fragment = f;
-                break;
+
             default:
+                String formName = dialogOptions[position - 1]; // account for the base fragment
+                DisplayFormFragment f = new DisplayFormFragment();
+                f.setFormName(formName);
+                fragment = f;
                 break;
         }
 
@@ -42,6 +45,6 @@ public class HouseHoldActivityPagerAdapter extends FragmentPagerAdapter{
 
     @Override
     public int getCount() {
-        return 2;
+        return dialogOptions.length + 1; // index 0 is always occupied by the base fragment
     }
 }
