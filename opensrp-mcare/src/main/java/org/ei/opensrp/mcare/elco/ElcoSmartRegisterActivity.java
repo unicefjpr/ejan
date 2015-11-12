@@ -139,7 +139,7 @@ public class ElcoSmartRegisterActivity extends SecuredNativeSmartRegisterActivit
         return clientProvider;
     }
 
-    private DialogOption[] getEditOptions() {
+    public DialogOption[] getEditOptions() {
         return new DialogOption[]{
 
                 new OpenFormOption(getResources().getString(R.string.psrfform), "psrf_form", formController)
@@ -171,7 +171,7 @@ public class ElcoSmartRegisterActivity extends SecuredNativeSmartRegisterActivit
     }
 
     @Override
-    protected void startRegistration() {
+    public void startRegistration() {
         FieldOverrides fieldOverrides = new FieldOverrides(context.anmLocationController().getLocationJSON());
         startFormActivity("census_enrollment_form", null,fieldOverrides.getJSONString());
     }

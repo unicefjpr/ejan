@@ -39,6 +39,10 @@ public class OpenFormOption implements EditOption {
         return name;
     }
 
+    public String getFormName(){
+        return formName;
+    }
+
     @Override
     public void doEdit(SmartRegisterClient client) {
 

@@ -1,6 +1,5 @@
 package org.ei.opensrp.mcare;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 import org.ei.opensrp.Context;
 import org.ei.opensrp.commonregistry.CommonPersonObjectController;
 import org.ei.opensrp.event.Listener;
-import org.ei.opensrp.mcare.elco.ElcoPSRFDueDateSort;
 import org.ei.opensrp.mcare.household.tutorial.tutorialCircleViewFlow;
 import org.ei.opensrp.service.PendingFormSubmissionService;
 import org.ei.opensrp.sync.SyncAfterFetchListener;
@@ -107,12 +105,12 @@ public class NativeHomeActivity extends SecuredActivity {
         SYNC_COMPLETED.addListener(onSyncCompleteListener);
         FORM_SUBMITTED.addListener(onFormSubmittedListener);
         ACTION_HANDLED.addListener(updateANMDetailsListener);
-        ActionBar actionBar = getActionBar();
-        getActionBar().setTitle("");
-        getActionBar().setIcon(getResources().getDrawable(org.ei.opensrp.mcare.R.mipmap.logo));
-        actionBar.setLogo(org.ei.opensrp.mcare.R.mipmap.logo);
-        actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        //ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setIcon(getResources().getDrawable(org.ei.opensrp.mcare.R.mipmap.logo));
+        getSupportActionBar().setLogo(org.ei.opensrp.mcare.R.mipmap.logo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         LoginActivity.setLanguage();
 //        getActionBar().setBackgroundDrawable(getReso
 // urces().getDrawable(R.color.action_bar_background));
