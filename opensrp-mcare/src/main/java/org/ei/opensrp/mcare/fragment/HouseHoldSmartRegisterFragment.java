@@ -45,6 +45,7 @@ import org.ei.opensrp.view.dialog.DialogOptionModel;
 import org.ei.opensrp.view.dialog.EditOption;
 import org.ei.opensrp.view.dialog.FilterOption;
 import org.ei.opensrp.view.dialog.LocationSelectorDialogFragment;
+import org.ei.opensrp.view.dialog.OpenFormOption;
 import org.ei.opensrp.view.dialog.ServiceModeOption;
 import org.ei.opensrp.view.dialog.SortOption;
 import org.ei.opensrp.view.fragment.SecuredNativeSmartRegisterFragment;
@@ -54,6 +55,7 @@ import org.opensrp.api.util.LocationTree;
 import org.opensrp.api.util.TreeNode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -123,10 +125,8 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
                 ArrayList<DialogOption> dialogOptionslist = new ArrayList<DialogOption>();
 
                 dialogOptionslist.add(new AllClientsFilter());
-                dialogOptionslist.add( new NOHHMWRAEXISTFilterOption("0","ELCO", NOHHMWRAEXISTFilterOption.ByColumnAndByDetails.byDetails));
-                dialogOptionslist.add(new HHMWRAEXISTFilterOption("0","ELCO", HHMWRAEXISTFilterOption.ByColumnAndByDetails.byDetails));
-
-
+                dialogOptionslist.add( new NOHHMWRAEXISTFilterOption("0","MWRA", NOHHMWRAEXISTFilterOption.ByColumnAndByDetails.byDetails));
+                dialogOptionslist.add(new HHMWRAEXISTFilterOption("0","MWRA", HHMWRAEXISTFilterOption.ByColumnAndByDetails.byDetails));
 
                 String locationjson = context.anmLocationController().get();
                 LocationTree locationTree = EntityUtils.fromJson(locationjson, LocationTree.class);
@@ -189,7 +189,7 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
         villageController = new VillageController(context.allEligibleCouples(),
                 context.listCache(), context.villagesCache());
         dialogOptionMapper = new DialogOptionMapper();
-        context.formSubmissionRouter().getHandlerMap().put("census_enrollment_form", new CensusEnrollmentHandler());
+        context.formSubmissionRouter().getHandlerMap().put("census_enrollment_form",new CensusEnrollmentHandler());
     }
 
     @Override
@@ -197,7 +197,6 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
         getDefaultOptionsProvider();
 
         super.setupViews(view);
-        view.findViewById(R.id.btn_report_month).setVisibility(INVISIBLE);
 
         setServiceModeViewDrawableRight(null);
         updateSearchView();
@@ -252,66 +251,9 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
 
     @Override
     protected void onResumption() {
-    }
-
-    private void checkforNidMissing(View view) {
-        LinearLayout titlelayout = (LinearLayout)view.findViewById(org.ei.opensrp.R.id.title_layout);
-        if(anyNIdmissing(controller)) {
-            try {
-                titlelayout.removeView(getActivity().findViewById(900)) ;
-
-            }catch(Exception e){
-
-            }
-            ImageButton warn = new ImageButton(getActivity());
-            warn.setImageDrawable(getResources().getDrawable(R.mipmap.warning));
-            warn.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            warn.setBackground(null);
-            warn.setId(900);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.gravity = Gravity.CENTER;
-
-//        warn.setGravity(Gravity.CENTER);
-//        warn.setB
-            titlelayout.addView(warn, layoutParams);
-            warn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getClientsAdapter()
-                            .refreshList(new noNIDFilter(), getCurrentServiceModeOption(),
-                                    getCurrentSearchFilter(), getCurrentSortOption());
-                }
-            });
-        }else{
-            titlelayout.removeView(getActivity().findViewById(900));
-        }
-    }
-
-    private boolean anyNIdmissing(CommonPersonObjectController controller) {
-        boolean toreturn = false;
-        List<CommonPersonObject> allchildelco = null;
-        CommonPersonObjectClients clients = controller.getClients();
-        ArrayList<String> list = new ArrayList<String>();
-        AllCommonsRepository allElcoRepository = org.ei.opensrp.Context.getInstance().allCommonsRepositoryobjects("elco");
-
-        for(int i = 0;i <clients.size();i++) {
-
-            list.add((clients.get(i).entityId()));
-
-        }
-        allchildelco = allElcoRepository.findByRelationalIDs(list);
-
-        if(allchildelco != null) {
-            for (int i = 0; i < allchildelco.size(); i++) {
-                if (allchildelco.get(i).getDetails().get("FWELIGIBLE").equalsIgnoreCase("1")) {
-                    if (allchildelco.get(i).getDetails().get("nidImage") == null) {
-                        toreturn = true;
-                    }
-                }
-            }
-        }
-        return toreturn;
-//        return false;
+        super.onResumption();
+        getDefaultOptionsProvider();
+        updateSearchView();
     }
 
     public void updateSearchView(){
@@ -327,7 +269,7 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
 
                     @Override
                     protected Object doInBackground(Object[] params) {
-//                        currentSearchFilter = new HHSearchOption(cs.toString());
+//                        currentSearchFilter =
                         setCurrentSearchFilter(new HHSearchOption(cs.toString()));
                         filteredClients = getClientsAdapter().getListItemProvider()
                                 .updateClients(getCurrentVillageFilter(), getCurrentServiceModeOption(),
@@ -377,5 +319,65 @@ public class HouseHoldSmartRegisterFragment extends SecuredNativeSmartRegisterFr
 
             }
         }
+    }
+
+    private void checkforNidMissing(View view) {
+        LinearLayout titlelayout = (LinearLayout)view.findViewById(org.ei.opensrp.R.id.title_layout);
+        if(anyNIdmissing(controller)) {
+            try {
+                titlelayout.removeView(getActivity().findViewById(900)) ;
+
+            }catch(Exception e){
+
+            }
+            ImageButton warn = new ImageButton(getActivity());
+            warn.setImageDrawable(getResources().getDrawable(R.mipmap.warning));
+            warn.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            warn.setBackground(null);
+            warn.setId(900);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = Gravity.CENTER;
+
+//        warn.setGravity(Gravity.CENTER);
+//        warn.setB
+            titlelayout.addView(warn, layoutParams);
+            warn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getClientsAdapter()
+                            .refreshList(new noNIDFilter(), getCurrentServiceModeOption(),
+                                    getCurrentSearchFilter(), getCurrentSortOption());
+                }
+            });
+        }else{
+            titlelayout.removeView(getActivity().findViewById(900));
+        }
+    }
+
+    private boolean anyNIdmissing(CommonPersonObjectController controller) {
+        boolean toreturn = false;
+        List<CommonPersonObject> allchildelco = null;
+        CommonPersonObjectClients clients = controller.getClients();
+        ArrayList<String> list = new ArrayList<String>();
+        AllCommonsRepository allElcoRepository = Context.getInstance().allCommonsRepositoryobjects("elco");
+
+        for(int i = 0;i <clients.size();i++) {
+
+            list.add((clients.get(i).entityId()));
+
+        }
+        allchildelco = allElcoRepository.findByRelationalIDs(list);
+
+        if(allchildelco != null) {
+            for (int i = 0; i < allchildelco.size(); i++) {
+                if (allchildelco.get(i).getDetails().get("FWELIGIBLE").equalsIgnoreCase("1")) {
+                    if (allchildelco.get(i).getDetails().get("nidImage") == null) {
+                        toreturn = true;
+                    }
+                }
+            }
+        }
+        return toreturn;
+//        return false;
     }
 }
