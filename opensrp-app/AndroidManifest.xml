@@ -5,7 +5,6 @@
     android:versionCode="32"
     android:versionName="3.0.1">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -72,22 +71,27 @@
         <activity
             android:name=".view.activity.ECSmartRegisterActivity"
             android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.FPSmartRegisterActivity"
             android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.ANCSmartRegisterActivity"
             android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.PNCSmartRegisterActivity"
             android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.ChildSmartRegisterActivity"
             android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppThemeNoTitle" />
         <activity
             android:name=".view.activity.FormActivity"
@@ -100,28 +104,32 @@
         <activity
             android:name=".view.activity.NativeECSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppThemeNoActionBarAndTitle"  />
 
         <activity
             android:name=".view.activity.NativeChildSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppThemeNoActionBarAndTitle" />
 
         <activity
             android:name=".view.activity.NativeFPSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppThemeNoActionBarAndTitle"  />
 
         <activity
             android:name=".view.activity.NativeANCSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
-
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppThemeNoActionBarAndTitle"  />
 
         <activity
             android:name=".view.activity.NativePNCSmartRegisterActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppThemeNoActionBarAndTitle"  />
 
 
         <activity

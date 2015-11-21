@@ -112,9 +112,10 @@ public class ElcoSmartRegisterActivity extends SecuredNativeSmartRegisterActivit
     public void onPageChanged(int page){
         setRequestedOrientation(page == 0 ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
+
     @Override
     protected SmartRegisterPaginatedAdapter adapter() {
-        return new SmartRegisterPaginatedAdapter(clientsProvider());
+        return null;
     }
 
     @Override
@@ -139,19 +140,11 @@ public class ElcoSmartRegisterActivity extends SecuredNativeSmartRegisterActivit
     public void startRegistration() {
     }
 
-
-
-
     public DialogOption[] getEditOptions() {
         return new DialogOption[]{
-
                 new OpenFormOption(getResources().getString(R.string.psrfform), "psrf_form", formController)
         };
     }
-
-
-
-
 
     private class ClientActionHandler implements View.OnClickListener {
         @Override
@@ -205,56 +198,6 @@ public class ElcoSmartRegisterActivity extends SecuredNativeSmartRegisterActivit
         }
 
     }
-    public void updateSearchView(){
-        getSearchView().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            }
-
-            @Override
-            public void onTextChanged(final CharSequence cs, int start, int before, int count) {
-                (new AsyncTask() {
-                    SmartRegisterClients filteredClients;
-
-                    @Override
-                    protected Object doInBackground(Object[] params) {
-//                        currentSearchFilter = new ElcoSearchOption(cs.toString());
-                        setCurrentSearchFilter(new ElcoSearchOption(cs.toString()));
-                        filteredClients = getClientsAdapter().getListItemProvider()
-                                .updateClients(getCurrentVillageFilter(), getCurrentServiceModeOption(),
-                                        getCurrentSearchFilter(), getCurrentSortOption());
-
-
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Object o) {
-//                        clientsAdapter
-//                                .refreshList(currentVillageFilter, currentServiceModeOption,
-//                                        currentSearchFilter, currentSortOption);
-                        getClientsAdapter().refreshClients(filteredClients);
-                        getClientsAdapter().notifyDataSetChanged();
-                        getSearchCancelView().setVisibility(isEmpty(cs) ? INVISIBLE : VISIBLE);
-                        super.onPostExecute(o);
-                    }
-                }).execute();
-//                currentSearchFilter = new HHSearchOption(cs.toString());
-//                clientsAdapter
-//                        .refreshList(currentVillageFilter, currentServiceModeOption,
-//                                currentSearchFilter, currentSortOption);
-//
-//                searchCancelView.setVisibility(isEmpty(cs) ? INVISIBLE : VISIBLE);
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-    }
 
     @Override
     public void saveFormSubmission(String formSubmission, String id, String formName, Map<String, String> fieldOverrides){
@@ -298,6 +241,7 @@ public class ElcoSmartRegisterActivity extends SecuredNativeSmartRegisterActivit
         });
 
     }
+
     public android.support.v4.app.Fragment findFragmentByPosition(int position) {
         FragmentPagerAdapter fragmentPagerAdapter = mPagerAdapter;
         return getSupportFragmentManager().findFragmentByTag("android:switcher:" + mPager.getId() + ":" + fragmentPagerAdapter.getItemId(position));
@@ -306,18 +250,13 @@ public class ElcoSmartRegisterActivity extends SecuredNativeSmartRegisterActivit
     public DisplayFormFragment getDisplayFormFragmentAtIndex(int index) {
         return  (DisplayFormFragment)findFragmentByPosition(index);
     }
-    public void addChildToList(ArrayList<DialogOption> dialogOptionslist,Map<String,TreeNode<String, Location>> locationMap){
-        for(Map.Entry<String, TreeNode<String, Location>> entry : locationMap.entrySet()) {
 
-            if(entry.getValue().getChildren() != null) {
-                addChildToList(dialogOptionslist,entry.getValue().getChildren());
-
-            }else{
-                StringUtil.humanize(entry.getValue().getLabel());
-                String name = StringUtil.humanize(entry.getValue().getLabel());
-                dialogOptionslist.add(new ElcoMauzaCommonObjectFilterOption(name.replace(" ","_"),"location_name", ElcoMauzaCommonObjectFilterOption.ByColumnAndByDetails.byDetails,name));
-
-            }
+    @Override
+    public void onBackPressed() {
+        if (currentPage != 0){
+            switchToBaseFragment(null);
+        }else if (currentPage == 0) {
+            super.onBackPressed(); // allow back key only if we are
         }
     }
 }
